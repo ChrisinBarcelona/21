@@ -17,7 +17,7 @@
     y: [FROM.y, STEPS[0].y, STEPS[1].y]
   };
 
-  function BlurText({ text = "", delay = 100, className = "" }) {
+  function BlurText({ text = "", delay = 100, className = "", align = "center", as = "p" }) {
     const ref = useRef(null);
     const [inView, setInView] = useState(false);
 
@@ -43,39 +43,42 @@
 
     const words = text.split(" ");
 
-    return (
-      <p
-        ref={ref}
-        className={className}
-        style={{
+    return React.createElement(
+      as,
+      {
+        ref,
+        className,
+        style: {
           display: "flex",
           flexWrap: "wrap",
-          justifyContent: "center",
-          rowGap: "0.1em"
-        }}
-      >
-        {words.map((word, i) => (
-          <motion.span
-            key={word + i}
-            initial={FROM}
-            animate={inView ? KEYFRAMES : FROM}
-            transition={{
-              duration: STEP_DURATION * 2,
-              times: [0, 0.5, 1],
-              delay: (i * delay) / 1000,
-              ease: "easeOut"
-            }}
-            style={{
-              display: "inline-block",
-              /* a real space would be swallowed by the -4px tracking */
-              marginRight: "0.28em",
-              willChange: "transform, filter, opacity"
-            }}
-          >
-            {word}
-          </motion.span>
-        ))}
-      </p>
+          justifyContent: align === "left" ? "flex-start" : "center",
+          rowGap: "0.1em",
+          /* A flex container swallows the whitespace between the word spans,
+             so the gap has to be drawn explicitly. columnGap rather than a
+             per-word margin: it only applies *between* words, so a centred
+             line stays centred and the measure matches the design frame. */
+          columnGap: "0.18em"
+        }
+      },
+      words.map((word, i) => (
+        <motion.span
+          key={word + i}
+          initial={FROM}
+          animate={inView ? KEYFRAMES : FROM}
+          transition={{
+            duration: STEP_DURATION * 2,
+            times: [0, 0.5, 1],
+            delay: (i * delay) / 1000,
+            ease: "easeOut"
+          }}
+          style={{
+            display: "inline-block",
+            willChange: "transform, filter, opacity"
+          }}
+        >
+          {word}
+        </motion.span>
+      ))
     );
   }
 
