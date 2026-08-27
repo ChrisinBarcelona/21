@@ -96,18 +96,17 @@ the gap has to be drawn explicitly. It uses `columnGap` rather than a per-word
 centred and the headline breaks across the design's 672px measure exactly as drawn
 ("We Make Websites that / Are Impossible to Ignore").
 
-## Missing assets
+## Project thumbnails
 
-The three project thumbnails are **not in the repo**. Their exported originals live on
-`www.figma.com`, which the egress policy of the environment this was built in blocks, so
-they could not be downloaded. Drop them in at:
+The three cards in Latest Projects are backed by `assets/projects/`:
 
 ```
-assets/projects/locker-room.jpg     // Lean Startup  — Locker Room
-assets/projects/honest-greens.jpg   // Service Design — Honest Greens
-assets/projects/conjuga.jpg         // iOS            — Conjuga
+locker-room.jpg     // Lean Startup   — Locker Room
+honest-greens.jpg   // Service Design — Honest Greens
+conjuga.jpg         // iOS            — Conjuga
 ```
 
-Any aspect ratio works — the tile is a fixed 194px-tall glass surface and the image is
-`object-cover`. Until the files exist, `ProjectImage` drops the `<img>` on error so the
-card shows the designed empty glass tile rather than a broken frame.
+They are 747x388, which is close enough to the tile's 1.92:1 ratio that `object-cover`
+barely crops. Any aspect ratio works though — the tile is a fixed 194px-tall glass
+surface. `ProjectImage` drops the `<img>` on error, so a missing or renamed file leaves
+the designed empty glass tile rather than a broken frame.
