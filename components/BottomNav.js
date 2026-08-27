@@ -9,6 +9,8 @@
 (function () {
   const { useEffect, useState } = React;
   const motion = window.Motion.motion;
+  const useReducedMotion = window.useReducedMotion;
+  const reveal = window.reveal;
 
   const ITEMS = [
     { id: "hero", label: "Home", Icon: window.Home },
@@ -19,6 +21,7 @@
 
   function BottomNav() {
     const [active, setActive] = useState("hero");
+    const reduced = useReducedMotion();
 
     useEffect(() => {
       const sections = ITEMS.map((item) => document.getElementById(item.id)).filter(Boolean);
@@ -42,51 +45,54 @@
     return (
       <nav
         className="fixed bottom-8 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none"
-        aria-label="Section navigation"
+        aria-label="Sections"
       >
-        <motion.div
-          initial={{ filter: "blur(10px)", opacity: 0, y: 20 }}
-          animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.2, ease: "easeOut" }}
-          className="liquid-glass-strong rounded-full flex items-center gap-0.5 p-2 w-full max-w-[390px] pointer-events-auto"
+        <motion.ul
+          {...reveal(reduced, 1.2)}
+          className="liquid-glass-strong rounded-full flex items-center gap-0.5 p-2 w-full max-w-[24.375rem] pointer-events-auto list-none m-0"
         >
           {ITEMS.map(({ id, label, Icon }) => {
             const isActive = active === id;
             return (
-              <a
-                key={id}
-                href={"#" + id}
-                aria-current={isActive ? "true" : undefined}
-                className="relative flex-1 min-w-0 flex flex-col items-center justify-center gap-1.5 rounded-full px-2 sm:px-4 py-2"
-              >
-                {isActive && (
-                  <motion.span
-                    layoutId="bottom-nav-selected"
-                    className="absolute inset-0 rounded-full"
-                    style={{ background: "var(--color-bg-glass-selected)" }}
-                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                  />
-                )}
-                <Icon
-                  className={
-                    "relative h-6 w-6 shrink-0 transition-colors duration-300 " +
-                    (isActive ? "text-ink-primary" : "text-ink-secondary")
-                  }
-                />
-                <span
-                  className={
-                    "relative font-body whitespace-nowrap transition-colors duration-300 " +
-                    (isActive
-                      ? "text-[12px] leading-4 font-medium text-ink-primary"
-                      : "text-[11px] leading-[14px] font-normal text-ink-tertiary")
-                  }
+              <li key={id} className="relative flex-1 min-w-0">
+                <a
+                  href={"#" + id}
+                  aria-current={isActive ? "true" : undefined}
+                  className="relative flex flex-col items-center justify-center gap-1.5 rounded-full px-2 sm:px-4 py-2"
                 >
-                  {label}
-                </span>
-              </a>
+                  {isActive && (
+                    <motion.span
+                      layoutId="bottom-nav-selected"
+                      className="absolute inset-0 rounded-full"
+                      style={{ background: "var(--color-bg-glass-selected)" }}
+                      transition={
+                        reduced
+                          ? { duration: 0 }
+                          : { type: "spring", stiffness: 380, damping: 32 }
+                      }
+                    />
+                  )}
+                  <Icon
+                    className={
+                      "relative h-6 w-6 shrink-0 transition-colors duration-300 " +
+                      (isActive ? "text-ink-primary" : "text-ink-secondary")
+                    }
+                  />
+                  <span
+                    className={
+                      "relative font-body whitespace-nowrap transition-colors duration-300 " +
+                      (isActive
+                        ? "text-[0.75rem] leading-4 font-medium text-ink-primary"
+                        : "text-[0.6875rem] leading-[0.875rem] font-normal text-ink-tertiary")
+                    }
+                  >
+                    {label}
+                  </span>
+                </a>
+              </li>
             );
           })}
-        </motion.div>
+        </motion.ul>
       </nav>
     );
   }
