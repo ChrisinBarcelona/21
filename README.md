@@ -25,6 +25,8 @@ assets/
   projects/             the three project thumbnails (see "Missing assets")
 components/
   Icons.js              lucide glyphs: ArrowUpRight, Play, Home, Navigation, Star
+  Motion.js             the reduced-motion hook and the shared reveal helpers
+  Kicker.js             the "// Label" eyebrow
   FadingVideo.js        rAF-driven crossfade looping video (no CSS transitions)
   BlurText.js           word-by-word blur-in headline, IntersectionObserver triggered
   TopBar.js             sticky wordmark
@@ -60,6 +62,64 @@ bottom nav's selected pill.
 
 Fonts: **Instrument Serif** (always italic) for headings, **Barlow** for body copy.
 Tailwind's default border radius is overridden to `9999px`, so a bare `rounded` is a pill.
+
+## Scale
+
+The page is drawn at 1.5x the Figma frame. That is done in one place — the root
+font size — rather than by rewriting every value:
+
+```css
+html { font-size: 150%; }
+```
+
+Every length in the design is expressed in `rem`, so type, spacing, radii, stroke
+and blur all scale together and the proportions of the frame are preserved. To read
+a value back against Figma, multiply by 16: `max-w-[90rem]` is the 1440px frame,
+`h-[12.125rem]` is the 194px image tile.
+
+`150%` rather than a flat `24px` on purpose. A reader who has raised their browser's
+default font size gets 1.5x *their* size, so the page compounds with that setting
+instead of overriding it.
+
+Two things do not follow the root font size, and so are handled explicitly:
+
+- **Breakpoints** are viewport px. They are scaled by the same 1.5 (`sm` 960, `md`
+  1152, `lg` 1536) — otherwise the 3-column grid would engage at 1024px while each
+  column is half again as wide as it used to be. This also means the layout matches
+  what browser zoom at 150% already does: 3 columns need roughly 1900px now.
+- **The headline measure** is the one length in `em` rather than `rem`: 672/88 =
+  `7.64em`. Tied to its own font size, it holds the design's type-to-measure ratio
+  through every breakpoint step, so the line always breaks where Figma breaks it.
+
+The first type step is gentler than a strict 1.5x. A phone viewport cannot take the
+full multiple without pushing the hero CTAs under the floating nav; the desktop
+steps carry the full scale.
+
+## Accessibility
+
+- **Skip link** to `#content` as the first tab stop; `<header>`, the section `<nav>`
+  and `<footer>` sit outside `<main>`, so skipping the chrome actually skips it.
+- **Focus** draws an explicit white ring — the UA default is invisible on this page.
+  It inherits `border-radius`, so it traces the pills rather than boxing them.
+- **Reduced motion** is read in JS, not just CSS, because Framer Motion animates
+  through inline styles that a CSS media block cannot reach. `Motion.js` exposes the
+  preference; reveals keep the fade but drop the travel and the blur, `BlurText`
+  skips the word split entirely, and `FadingVideo` holds its first frame instead of
+  looping — background movement the reader cannot stop is the thing being avoided.
+- **More contrast** inverts the glass from a bright film to a dark scrim and makes
+  the edge ring solid, which is what actually buys contrast for text over a bright
+  video frame.
+- **Text over video** carries a tight shadow (`.on-video`), scoped to the copy that
+  sits directly on the clip — the card text has its own glass behind it.
+- `BlurText` emits a real space between its word spans. Flex drops a whitespace-only
+  text node rather than laying it out, so `columnGap` still owns the visible spacing
+  while the element's text content stays a readable sentence for screen readers and
+  find-in-page.
+- The `//` in every kicker is marked decorative; otherwise it is announced as
+  "slash slash" before each of the nine labels on the page.
+- Background video is `aria-hidden` and out of the tab order. Project images carry
+  descriptive alt text rather than a repeat of the title beneath them.
+- The smallest type on the page is now 16.5px rendered, up from 11px.
 
 ## Videos
 

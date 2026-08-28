@@ -3,10 +3,9 @@
 (function () {
   const motion = window.Motion.motion;
   const BlurText = window.BlurText;
-
-  const RISE = { filter: "blur(10px)", opacity: 0, y: 20 };
-  const SETTLE = { filter: "blur(0px)", opacity: 1, y: 0 };
-  const VIEWPORT = { once: true, amount: 0.2 };
+  const Kicker = window.Kicker;
+  const useReducedMotion = window.useReducedMotion;
+  const revealOnScroll = window.revealOnScroll;
 
   const SKILLS = [
     {
@@ -36,49 +35,48 @@
   ];
 
   function Skills() {
+    const reduced = useReducedMotion();
+
     return (
       <section
         id="skills"
-        className="relative scroll-mt-20 mx-auto max-w-[1440px] px-6 md:px-10 lg:px-16 py-14"
+        aria-labelledby="skills-heading"
+        className="relative scroll-mt-20 mx-auto max-w-[90rem] px-6 md:px-10 lg:px-16 py-14"
       >
-        <div className="flex flex-col gap-4">
-          <motion.p
-            initial={RISE}
-            whileInView={SETTLE}
-            viewport={VIEWPORT}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="font-body text-sm leading-[19px] text-ink-tertiary"
-          >
-            // Skills
-          </motion.p>
+        <div className="on-video flex flex-col gap-4">
+          <motion.div {...revealOnScroll(reduced)}>
+            <Kicker className="font-body text-sm leading-[1.1875rem] text-ink-tertiary">
+              Skills
+            </Kicker>
+          </motion.div>
 
           <BlurText
             as="h2"
+            id="skills-heading"
             align="left"
             text="What We Love"
             delay={100}
-            className="font-heading italic text-ink-primary text-4xl md:text-5xl lg:text-[60px] leading-[0.9] tracking-[-2px] lg:tracking-[-3px]"
+            className="font-heading italic text-ink-primary text-4xl md:text-5xl lg:text-[3.75rem] leading-[0.9] tracking-[-0.125rem] lg:tracking-[-0.1875rem]"
           />
         </div>
 
-        <div className="mt-[54px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="mt-[3.375rem] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {SKILLS.map((skill, i) => (
             <motion.article
               key={skill.title}
-              initial={RISE}
-              whileInView={SETTLE}
-              viewport={VIEWPORT}
-              transition={{ duration: 0.8, delay: 0.15 + (i % 3) * 0.15, ease: "easeOut" }}
+              {...revealOnScroll(reduced, 0.15 + (i % 3) * 0.15)}
               className="liquid-glass glass-raised flex flex-col gap-4 p-6"
               style={{ borderRadius: "var(--radius-lg)" }}
             >
-              <p className="font-body text-sm leading-[19px] text-ink-tertiary">// Skills</p>
+              <Kicker className="font-body text-sm leading-[1.1875rem] text-ink-tertiary">
+                Skills
+              </Kicker>
 
-              <h3 className="font-heading italic text-ink-primary text-3xl md:text-4xl leading-9 tracking-[-1px]">
+              <h3 className="font-heading italic text-ink-primary text-3xl md:text-4xl leading-9 tracking-[-0.0625rem]">
                 {skill.title}
               </h3>
 
-              <p className="font-body font-light text-sm leading-[19px] text-ink-secondary">
+              <p className="font-body font-light text-sm leading-[1.1875rem] text-ink-secondary">
                 {skill.body}
               </p>
             </motion.article>

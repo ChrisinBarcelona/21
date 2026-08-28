@@ -1,9 +1,15 @@
 /* FadingVideo — a looping background video whose loop seam is hidden by a
    requestAnimationFrame-driven crossfade. No CSS transitions are used: the
    opacity is written frame by frame so a new fade can pick up wherever the
-   previous one was interrupted. */
+   previous one was interrupted.
+
+   Under reduced motion the clip is never played: it holds on its first
+   frame, so the page keeps its imagery without indefinite background
+   movement the reader cannot stop. The element is decorative and is
+   hidden from assistive tech either way. */
 (function () {
   const { useEffect, useRef } = React;
+  const useReducedMotion = window.useReducedMotion;
 
   const FADE_MS = 500;
   const FADE_OUT_LEAD = 0.55; // seconds before `ended` to start fading out
@@ -12,10 +18,20 @@
     const videoRef = useRef(null);
     const rafRef = useRef(null);
     const fadingOutRef = useRef(false);
+    const reduced = useReducedMotion();
 
     useEffect(() => {
       const video = videoRef.current;
       if (!video) return;
+
+      if (reduced) {
+        /* Hold frame one. Nothing to crossfade, so no listeners either. */
+        const showFirstFrame = () => { video.style.opacity = "1"; };
+        video.pause();
+        video.addEventListener("loadeddata", showFirstFrame);
+        if (video.readyState >= 2) showFirstFrame();
+        return () => video.removeEventListener("loadeddata", showFirstFrame);
+      }
 
       const fadeTo = (target, duration) => {
         cancelAnimationFrame(rafRef.current);
@@ -75,7 +91,7 @@
         video.removeEventListener("timeupdate", handleTimeUpdate);
         video.removeEventListener("ended", handleEnded);
       };
-    }, [src]);
+    }, [src, reduced]);
 
     return (
       <video
@@ -83,10 +99,12 @@
         src={src}
         className={className}
         style={{ opacity: 0, ...style }}
-        autoPlay
+        autoPlay={!reduced}
         muted
         playsInline
         preload="auto"
+        aria-hidden="true"
+        tabIndex={-1}
         {...rest}
       />
     );
