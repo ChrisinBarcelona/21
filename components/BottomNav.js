@@ -12,19 +12,32 @@
   const useReducedMotion = window.useReducedMotion;
   const reveal = window.reveal;
 
-  const ITEMS = [
+  /* The home page's destinations. Other pages pass their own — the case
+     study passes its chapters — so there is one nav implementation. */
+  const HOME_ITEMS = [
     { id: "hero", label: "Home", Icon: window.Home },
     { id: "projects", label: "Projects", Icon: window.Navigation },
     { id: "skills", label: "Skills", Icon: window.Star },
     { id: "contact", label: "Contact", Icon: window.ArrowUpRight }
   ];
 
-  function BottomNav() {
-    const [active, setActive] = useState("hero");
+  function BottomNav({ items = HOME_ITEMS, label = "Sections" }) {
+    const [active, setActive] = useState(items[0] && items[0].id);
     const reduced = useReducedMotion();
 
+    /* Read here, not inside the map: each item destructures its own
+       `label`, which would shadow this one and hand every item a
+       different layoutId — the selection would stop sliding. */
+    const selectedLayoutId = "nav-selected-" + label;
+
+    /* Four destinations get the design's exact 97.5px each. Past four the
+       labels are longer than the pattern was drawn for (a chapter is a
+       "Retrospective", a section is a "Home"), so each gets more room. */
+    const compact = items.length > 4;
+    const maxWidth = items.length * (compact ? 7.5 : 6.09375) + "rem";
+
     useEffect(() => {
-      const sections = ITEMS.map((item) => document.getElementById(item.id)).filter(Boolean);
+      const sections = items.map((item) => document.getElementById(item.id)).filter(Boolean);
       if (!sections.length) return;
 
       /* Whichever section is crossing the middle 10% band of the viewport
@@ -40,29 +53,31 @@
 
       sections.forEach((section) => observer.observe(section));
       return () => observer.disconnect();
-    }, []);
+    }, [items]);
 
     return (
       <nav
         className="fixed bottom-8 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none"
-        aria-label="Sections"
+        aria-label={label}
       >
         <motion.ul
           {...reveal(reduced, 1.2)}
-          className="liquid-glass-strong rounded-full flex items-center gap-0.5 p-2 w-full max-w-[24.375rem] pointer-events-auto list-none m-0"
+          style={{ maxWidth }}
+          className="liquid-glass-strong rounded-full flex items-center gap-0.5 p-2 w-full pointer-events-auto list-none m-0"
         >
-          {ITEMS.map(({ id, label, Icon }) => {
+          {items.map(({ id, label, Icon }) => {
             const isActive = active === id;
             return (
               <li key={id} className="relative flex-1 min-w-0">
                 <a
                   href={"#" + id}
+                  aria-label={label}
                   aria-current={isActive ? "true" : undefined}
                   className="relative flex flex-col items-center justify-center gap-1.5 rounded-full px-2 sm:px-4 py-2"
                 >
                   {isActive && (
                     <motion.span
-                      layoutId="bottom-nav-selected"
+                      layoutId={selectedLayoutId}
                       className="absolute inset-0 rounded-full"
                       style={{ background: "var(--color-bg-glass-selected)" }}
                       transition={
@@ -79,8 +94,10 @@
                     }
                   />
                   <span
+                    aria-hidden="true"
                     className={
                       "relative font-body whitespace-nowrap transition-colors duration-300 " +
+                      (compact ? "hidden sm:block " : "") +
                       (isActive
                         ? "text-[0.75rem] leading-4 font-medium text-ink-primary"
                         : "text-[0.6875rem] leading-[0.875rem] font-normal text-ink-tertiary")

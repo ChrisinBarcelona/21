@@ -20,7 +20,11 @@ python3 -m http.server 8000
 ## Layout
 
 ```
-index.html              Tailwind config, Google Fonts, design tokens, glass CSS, script tags
+index.html              the landing page
+project.html            the Individual Project Template (a UX case study)
+styles/
+  system.css            design tokens, glass, focus, motion and contrast — shared by both pages
+  tailwind.config.js    the Tailwind theme extension — shared by both pages
 assets/
   projects/             the three project thumbnails (see "Missing assets")
 components/
@@ -35,8 +39,78 @@ components/
   Projects.js           section 2 — Latest Projects
   Skills.js             section 3 — What We Love
   Footer.js             section 4 — contact + colophon
+  GlassImage.js         artwork in a glass tile, degrading to the tile alone
   App.js                composition + ReactDOM root
+  case/                 the case study building blocks — see below
 ```
+
+## The Individual Project Template
+
+`project.html` renders a UX case study from data. `case/ProjectData.js` is the
+whole input: replace it and the page becomes a different study.
+
+```
+case/
+  ProjectData.js        the content of one case study — the only file you edit per project
+  ProjectPage.js        hero, chapter loop, ReactDOM root
+  MethodBlock.js        the repeatable block, plus the numbered Chapter divider
+  MethodBody.js         the type -> body registry
+  Primitives.js         Tile, Label, Body, Bullets, Chip, ScrollX
+  Prose.js              statement + paragraphs
+  FlowSteps.js          sequential steps with arrows
+  JourneyMap.js         phases, lanes, and the emotional line
+  BusinessModelCanvas.js  the nine blocks in their canonical arrangement
+  CompetitiveMatrix.js  competitors x criteria
+  PersonaCard.js        portrait, evidence, behaviour
+  BrandAttributes.js    chips and bipolar scales
+  MoodBoard.js          reference grid
+  PrototypeShowcase.js  screens and a link out
+  UXSummary.js          outcome stats and retrospective columns
+```
+
+**Every method is the same block.** `MethodBlock` draws the kicker, title and
+lede; only the body differs. Bodies are registered by `type` in `MethodBody.js`,
+so a new UX method is one component and one line — nothing else on the page
+changes.
+
+```js
+{ method: "Problem Statement", title: "...", type: "prose",   data: { paragraphs: [...] } }
+{ method: "User Journey Map",  title: "...", type: "journey", data: { phases: [...] } }
+```
+
+Types: `prose`, `flow`, `journey`, `canvas`, `matrix`, `persona`, `attributes`,
+`moodboard`, `prototype`, `summary`. Simple types render at the reading measure;
+the structural ones take the full card width (`isWideMethod`).
+
+Chapters run on solid canvas rather than over video — a long read wants a still
+ground, and the raised 5% glass the method cards use needs the black to lift off.
+
+Notes on the dynamic blocks:
+
+- **JourneyMap** draws the emotional line as an SVG stretched to the column grid
+  (`preserveAspectRatio="none"` with a non-scaling stroke so it does not smear),
+  while the points are HTML positioned at the same percentages — a circle inside
+  a stretched SVG renders as an ellipse. Every phase also states its feeling in
+  words under the point, so the curve is a second reading, never the only one.
+- **FlowSteps** stacks with a downward arrow on narrow screens and runs across
+  with a rightward arrow once there is room, so the sequence is always read in
+  the direction the arrows point. A step's `kind` changes the badge glyph as well
+  as its fill.
+- **CompetitiveMatrix** is a real table with a caption and row headers. Each mark
+  is a glyph *and* a written value in its accessible name, so a rating never
+  rests on shape alone.
+- Wide blocks scroll inside their own labelled, focusable container rather than
+  widening the page.
+
+### A Babel-standalone constraint
+
+Every component file is an IIFE publishing onto `window`, because
+Babel-standalone runs them all in one shared global scope. That protects your own
+bindings but **not Babel's injected helpers**: object-rest destructuring
+(`function F({ a, ...rest })`) compiles to a top-level `const _excluded`, and a
+second one anywhere on the page is a redeclaration that kills the script.
+`FadingVideo` owns the only one. JSX spread (`{...props}`) is fine — it emits a
+function declaration, which can redeclare.
 
 Each component file wraps its body in an IIFE and publishes itself on `window`, since
 Babel-standalone runs every script in the shared global scope.
@@ -46,6 +120,8 @@ Babel-standalone runs every script in the shared global scope.
 The Figma variable collection is mirrored as CSS custom properties in `index.html`
 (`--blur-glass`, `--stroke-glass`, `--radius-lg`, `--color-bg-glass-*` …) so a value in
 the markup can be read against the design without a lookup table.
+
+The system lives in `styles/system.css` and is shared by both pages.
 
 - `.liquid-glass` — Glass/Subtle: 4px blur, for cards and image tiles
 - `.liquid-glass-strong` — Glass/Strong: 50px blur, for the primary CTA and the bottom nav

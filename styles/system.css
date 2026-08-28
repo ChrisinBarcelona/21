@@ -1,0 +1,229 @@
+/* ------------------------------------------------------------------
+   Aeon — Liquid Glass design system.
+
+   Shared by every page. Token values mirror the Figma variable
+   collection, so a value in the markup can be read against the design
+   without a lookup table.
+   ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------
+   Scale.
+
+   The whole page is drawn at 1.5x. It is done here, once, rather than
+   by rewriting every size: the root font size is the multiplier, and
+   every length in the design is expressed in rem, so type, spacing,
+   radii, stroke and blur all scale together and the proportions of
+   the Figma frame are preserved exactly.
+
+   150% rather than a flat 24px on purpose — a reader who has raised
+   their browser's default font size still gets 1.5x *their* size, so
+   this compounds with the accessibility setting instead of
+   overriding it.
+
+   Converting a Figma px value: rem = px / 16. It then renders at
+   1.5x that px value here.
+   ------------------------------------------------------------------ */
+html { font-size: 150%; }
+
+/* ------------------------------------------------------------------
+   Design tokens — mirrors the Figma variable collection so the values
+   below can be read against the design without a lookup table. Each
+   comment gives the Figma px value; the rem is that / 16.
+   ------------------------------------------------------------------ */
+:root {
+  --color-bg-canvas: #000000;
+
+  --color-bg-glass: rgba(255, 255, 255, 0.01);
+  --color-bg-glass-hover: rgba(255, 255, 255, 0.05);
+  --color-bg-glass-raised-hover: rgba(255, 255, 255, 0.08);
+  --color-bg-glass-selected: rgba(255, 255, 255, 0.1);
+
+  --color-border-glass-fade: rgba(255, 255, 255, 0.15);
+  --color-effect-inner-highlight: rgba(255, 255, 255, 0.1);
+  --color-effect-inner-highlight-strong: rgba(255, 255, 255, 0.15);
+  --color-effect-shadow-ambient: rgba(0, 0, 0, 0.05);
+
+  --blur-glass: 0.25rem;          /* 4px  */
+  --blur-glass-strong: 3.125rem;  /* 50px */
+  --stroke-glass: 0.0875rem;      /* 1.4px */
+  --hairline: 0.0625rem;          /* 1px  */
+
+  --radius-md: 0.75rem;           /* 12px */
+  --radius-lg: 1.25rem;           /* 20px */
+
+  --focus-ring: #ffffff;
+}
+
+html, body { background: var(--color-bg-canvas); }
+html { scroll-behavior: smooth; }
+body { margin: 0; -webkit-font-smoothing: antialiased; }
+
+/* ------------------------------------------------------------------
+   Focus. Tailwind's preflight leaves the UA outline in place, but a
+   thin dark ring is invisible on this page. Keyboard users get an
+   explicit white ring; it follows the element's own border-radius,
+   so it traces the pills rather than boxing them.
+   ------------------------------------------------------------------ */
+:focus-visible {
+  outline: 0.125rem solid var(--focus-ring);
+  outline-offset: 0.1875rem;
+}
+/* main takes focus from the skip link but should not draw a ring */
+main:focus, main:focus-visible { outline: none; }
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  background: #000;
+  color: #fff;
+  font-family: "Barlow", sans-serif;
+  font-size: 0.875rem;
+  box-shadow: 0 0 0 var(--hairline) rgba(255, 255, 255, 0.5);
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: translateY(0); }
+
+/* Body copy sits directly on the video with no scrim, by design. A
+   tight shadow keeps it legible over a bright frame without reading
+   as a glow on a dark one. */
+.on-video {
+  text-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.45);
+}
+
+.liquid-glass {
+  background: var(--color-bg-glass);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  border: none;
+  box-shadow: inset 0 var(--hairline) var(--hairline) var(--color-effect-inner-highlight);
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--stroke-glass);
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.15) 20%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0.15) 80%,
+    rgba(255, 255, 255, 0.45) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  /* the ring is a ::before, so it would sit under any absolutely
+     positioned child (card artwork, the nav's selected pill) */
+  z-index: 2;
+}
+
+.liquid-glass-strong {
+  background: var(--color-bg-glass);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(var(--blur-glass-strong));
+  -webkit-backdrop-filter: blur(var(--blur-glass-strong));
+  border: none;
+  box-shadow: 0.25rem 0.25rem 0.25rem var(--color-effect-shadow-ambient),
+              inset 0 var(--hairline) var(--hairline) var(--color-effect-inner-highlight-strong);
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-glass-strong::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--stroke-glass);
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0.2) 80%,
+    rgba(255, 255, 255, 0.5) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Card surfaces. Figma: "Hover lifts the surface from 1% to 5%".
+   Skills cards are drawn on the already-raised 5% surface, so they
+   lift one further step. */
+.glass-lift { transition: background-color 300ms ease; }
+.glass-lift:hover { background: var(--color-bg-glass-hover); }
+
+.glass-raised {
+  background: var(--color-bg-glass-hover);
+  transition: background-color 300ms ease;
+}
+.glass-raised:hover { background: var(--color-bg-glass-raised-hover); }
+
+/* ------------------------------------------------------------------
+   Reduced motion. The entrance animations are driven by Framer Motion
+   from JS, so the components read the same preference and drop the
+   travel and blur themselves; this covers the CSS-driven parts.
+   ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ------------------------------------------------------------------
+   More contrast. The glass inverts from a bright film to a dark
+   scrim, which is what actually buys contrast for text sitting over
+   a bright video frame, and the edge ring goes solid.
+   ------------------------------------------------------------------ */
+@media (prefers-contrast: more) {
+  :root {
+    --color-bg-glass: rgba(0, 0, 0, 0.7);
+    --color-bg-glass-hover: rgba(0, 0, 0, 0.8);
+    --color-bg-glass-raised-hover: rgba(0, 0, 0, 0.85);
+    --color-bg-glass-selected: rgba(0, 0, 0, 0.9);
+    --color-border-glass-fade: rgba(255, 255, 255, 0.6);
+  }
+  .liquid-glass::before,
+  .liquid-glass-strong::before { background: rgba(255, 255, 255, 0.85); }
+  .on-video { text-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.9); }
+}
+
+/* ------------------------------------------------------------------
+   Business Model Canvas. The arrangement carries the meaning of the
+   method, so it is stated as explicit template areas. Below the lg
+   breakpoint it collapses to one column in the method's own numbered
+   reading order.
+   ------------------------------------------------------------------ */
+.bmc-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 1536px) {
+  .bmc-grid {
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-areas:
+      "partners activities value relationships segments"
+      "partners resources  value channels      segments"
+      "cost     cost       cost  revenue       revenue";
+  }
+}

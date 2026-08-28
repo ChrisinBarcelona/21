@@ -1,8 +1,8 @@
 /* Projects — "Latest Projects". Sits transparent over the shared video band,
    so every surface here carries its own glass. */
 (function () {
-  const { useState } = React;
   const motion = window.Motion.motion;
+  const GlassImage = window.GlassImage;
   const BlurText = window.BlurText;
   const Kicker = window.Kicker;
   const useReducedMotion = window.useReducedMotion;
@@ -34,30 +34,6 @@
       alt: "The Conjuga wordmark set in bright green on charcoal, above the line Español - Verbos esenciales"
     }
   ];
-
-  /* The image tile is a glass surface with the artwork as its fill. If the
-     artwork is missing the surface still reads as designed, so drop the
-     <img> rather than leaving a broken frame behind. */
-  function ProjectImage({ src, alt }) {
-    const [failed, setFailed] = useState(false);
-
-    return (
-      <div
-        className="liquid-glass w-full h-[12.125rem] shrink-0 overflow-hidden"
-        style={{ borderRadius: "var(--radius-md)" }}
-      >
-        {!failed && (
-          <img
-            src={src}
-            alt={alt}
-            loading="lazy"
-            onError={() => setFailed(true)}
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        )}
-      </div>
-    );
-  }
 
   function Projects() {
     const reduced = useReducedMotion();
@@ -93,7 +69,7 @@
               className="liquid-glass glass-lift flex flex-col gap-4 p-6"
               style={{ borderRadius: "var(--radius-lg)" }}
             >
-              <ProjectImage src={project.image} alt={project.alt} />
+              <GlassImage src={project.image} alt={project.alt} className="h-[12.125rem]" />
 
               <Kicker className="font-body text-sm leading-[1.1875rem] text-ink-tertiary">
                 {project.kicker}
