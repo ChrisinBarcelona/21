@@ -12,7 +12,7 @@
    breaks where Figma breaks it ("We Make Websites that / Are Impossible to
    Ignore") instead of only at the largest size.
 
-   The first type step is gentler than a strict 1.5x. A phone viewport
+   The first type step is gentler than a strict 1.125x. A phone viewport
    cannot take the full multiple without pushing the CTAs under the
    floating nav, and a hero you have to scroll to act on is worse than a
    slightly smaller headline. The desktop steps carry the full scale. */
