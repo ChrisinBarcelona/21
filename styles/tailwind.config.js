@@ -16,16 +16,16 @@ tailwind.config = {
         }
       },
       /* Breakpoints are viewport px and so do NOT follow the root font
-         size. Scaled by the same 1.5 as everything else, otherwise a
+         size. Scaled by the same 1.125 as everything else, otherwise a
          multi-column layout would engage before there is room for the
          larger type — 3 cards would fire at 1024px while each column is
-         half again as wide as it used to be. */
+         an eighth wider than it used to be. */
       screens: {
-        sm: "960px",
-        md: "1152px",
-        lg: "1536px",
-        xl: "1920px",
-        "2xl": "2304px"
+        sm: "720px",
+        md: "864px",
+        lg: "1152px",
+        xl: "1440px",
+        "2xl": "1728px"
       },
       borderRadius: {
         DEFAULT: "9999px"

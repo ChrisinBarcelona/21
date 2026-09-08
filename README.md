@@ -141,11 +141,11 @@ Tailwind's default border radius is overridden to `9999px`, so a bare `rounded` 
 
 ## Scale
 
-The page is drawn at 1.5x the Figma frame. That is done in one place — the root
+The page is drawn at 1.125x the Figma frame. That is done in one place — the root
 font size — rather than by rewriting every value:
 
 ```css
-html { font-size: 150%; }
+html { font-size: 112.5%; }
 ```
 
 Every length in the design is expressed in `rem`, so type, spacing, radii, stroke
@@ -153,21 +153,21 @@ and blur all scale together and the proportions of the frame are preserved. To r
 a value back against Figma, multiply by 16: `max-w-[90rem]` is the 1440px frame,
 `h-[12.125rem]` is the 194px image tile.
 
-`150%` rather than a flat `24px` on purpose. A reader who has raised their browser's
-default font size gets 1.5x *their* size, so the page compounds with that setting
+`112.5%` rather than a flat `18px` on purpose. A reader who has raised their browser's
+default font size gets 1.125x *their* size, so the page compounds with that setting
 instead of overriding it.
 
 Two things do not follow the root font size, and so are handled explicitly:
 
-- **Breakpoints** are viewport px. They are scaled by the same 1.5 (`sm` 960, `md`
-  1152, `lg` 1536) — otherwise the 3-column grid would engage at 1024px while each
-  column is half again as wide as it used to be. This also means the layout matches
-  what browser zoom at 150% already does: 3 columns need roughly 1900px now.
+- **Breakpoints** are viewport px. They are scaled by the same 1.125 (`sm` 720, `md`
+  864, `lg` 1152) — otherwise the 3-column grid would engage at 1024px while each
+  column is an eighth wider than it used to be. This also means the layout matches
+  what browser zoom at 112.5% already does: 3 columns need roughly 1150px now.
 - **The headline measure** is the one length in `em` rather than `rem`: 672/88 =
   `7.64em`. Tied to its own font size, it holds the design's type-to-measure ratio
   through every breakpoint step, so the line always breaks where Figma breaks it.
 
-The first type step is gentler than a strict 1.5x. A phone viewport cannot take the
+The first type step is gentler than a strict 1.125x. A phone viewport cannot take the
 full multiple without pushing the hero CTAs under the floating nav; the desktop
 steps carry the full scale.
 
