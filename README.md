@@ -1,6 +1,6 @@
 # ckly.design
 
-The CKLY Design Studio landing page — a single scroll with four sections, two
+The CKLY Design Studio landing page — a single scroll with five sections, two
 looping background videos and a shared liquid-glass design system.
 
 Implemented from Figma: **inri-#005 — CKLY DESIGN**, frame `Total Website`
@@ -26,7 +26,8 @@ styles/
   system.css            design tokens, glass, focus, motion and contrast — shared by both pages
   tailwind.config.js    the Tailwind theme extension — shared by both pages
 assets/
-  projects/             the three project thumbnails (see "Missing assets")
+  projects/             the three project thumbnails
+  website-portfolio/    the client site thumbnails (see "Website Portfolio thumbnails")
 components/
   Icons.js              lucide glyphs: ArrowUpRight, Play, Home, Navigation, Star
   Motion.js             the reduced-motion hook and the shared reveal helpers
@@ -36,9 +37,10 @@ components/
   TopBar.js             sticky wordmark
   BottomNav.js          floating glass pill with scroll-spy
   Hero.js               section 1 — starfield video
-  Projects.js           section 2 — Latest Projects
-  Skills.js             section 3 — What We Love
-  Footer.js             section 4 — contact + colophon
+  WebsitePortfolio.js   section 2 — Website Portfolio (client sites)
+  Projects.js           section 3 — Latest Projects
+  Skills.js             section 4 — What We Love
+  Footer.js             section 5 — contact + colophon
   GlassImage.js         artwork in a glass tile, degrading to the tile alone
   App.js                composition + ReactDOM root
   case/                 the case study building blocks — see below
@@ -209,9 +211,9 @@ There are two clips:
 - **Hero** — overscaled to 120% and pinned to the top rather than centred, because the
   focal point of the clip is the top of frame. There is deliberately no dark overlay:
   all contrast comes from the glass chrome.
-- **Projects + Skills** — one shared backdrop for both sections, pinned with
-  `position: sticky` inside the band so a single viewport-tall clip covers roughly two
-  screens of content without being stretched across them. The footer sits below the band
+- **Website Portfolio + Projects + Skills** — one shared backdrop for all three
+  sections, pinned with `position: sticky` inside the band so a single viewport-tall
+  clip covers several screens of content without being stretched across them. The footer sits below the band
   on solid canvas, which is why it is the one part of the system that carries no glass.
 
 ## Motion
@@ -246,3 +248,52 @@ They are 747x388, which is close enough to the tile's 1.92:1 ratio that `object-
 barely crops. Any aspect ratio works though — the tile is a fixed 194px-tall glass
 surface. `ProjectImage` drops the `<img>` on error, so a missing or renamed file leaves
 the designed empty glass tile rather than a broken frame.
+
+## Website Portfolio
+
+`WebsitePortfolio.js` renders the client sites above Latest Projects. The whole
+section is one `SITES` array at the top of the file — add, remove or reorder a
+card by editing that array and nothing else.
+
+```js
+{
+  name: "Rosspark Hotel",
+  blurb: "A four-star hotel with dining, weddings and event spaces in County Antrim.",
+  category: "Hospitality",
+  functionality: "E-Commerce // Booking Integration",
+  domain: "rosspark.com",
+  image: "assets/website-portfolio/rosspark-hotel.jpg"
+}
+```
+
+`domain` is used three times — as the button label, as the `https://` href, and in
+the link's accessible name — so correcting a URL is a one-line change.
+
+The card is the Latest Projects card with a longer spine: the same 20px glass
+surface, 194px image tile, 24px padding and hover lift, closing on two metadata
+chips and a CTA instead of a status line. Descriptions vary in length, so the CTA
+carries `mt-auto` and the buttons line up across a row.
+
+**The whole card is the link.** Wrapping the `<article>` in an `<a>` would nest the
+CTA inside another interactive, so the CTA carries `.stretched-link` instead — its
+`::after` is stretched over the card at `z-index: 3`, clearing the glass edge ring
+at 2. The accessibility tree gets exactly one link per card; the whole surface is
+the hit area. The pill's glass sits on a `<span>` *inside* the anchor rather than on
+the anchor itself, because `.liquid-glass-strong` sets `position: relative` and
+`overflow: hidden` — either one on the anchor would collapse the overlay back onto
+the button. Links open in a new tab, which is what the up-right arrow signals.
+
+### Website Portfolio thumbnails
+
+The nine cards are backed by `assets/website-portfolio/`, one file per card:
+
+```
+hack-her-health.jpg     blue-cloud.jpg          emod-open-sea-lab.jpg
+skin-iq-aesthetics.jpg  rosspark-hotel.jpg      falafel-fresh.jpg
+mad-about-fabrics.jpg   binghams-bees.jpg       aris.jpg
+```
+
+The tile is the same fixed 194px-tall glass surface as the project cards, so any
+aspect ratio works and `GlassImage` drops the `<img>` on error — a missing file
+leaves the designed empty tile rather than a broken frame. See the README in that
+directory for the full name-to-card mapping.
