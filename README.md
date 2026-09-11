@@ -297,3 +297,7 @@ The tile is the same fixed 194px-tall glass surface as the project cards, so any
 aspect ratio works and `GlassImage` drops the `<img>` on error — a missing file
 leaves the designed empty tile rather than a broken frame. See the README in that
 directory for the full name-to-card mapping.
+
+The artwork is thematic stock rather than screenshots of the sites, so each entry
+carries its own `alt` describing the photograph. An empty `alt` marks an image
+decorative — correct, and never a wrong description, but a real one is better.

@@ -23,6 +23,12 @@ crops least. A `.png` or `.webp` is fine — change the `image` path in
 `GlassImage` drops the `<img>` on error, so a missing or misnamed file leaves
 the designed empty glass tile rather than a broken frame.
 
-Card alt text is generated as "The <Business Name> website homepage". If a
-thumbnail is not a homepage screenshot, edit the `alt` in
-`components/WebsitePortfolio.js`.
+The artwork is thematic stock rather than screenshots of the sites, so each
+card carries its own `alt` in the `SITES` array in
+`components/WebsitePortfolio.js` describing the photograph. An empty `alt`
+marks the image decorative — correct, and never a wrong description, but a
+real one is better, so write one when you add or change an image.
+
+Check the licence before adding one. Watermarked previews (Unsplash+ and the
+like) are not licensed for use and the watermark is plainly visible at card
+size.

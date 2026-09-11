@@ -29,7 +29,12 @@
 
   /* Content is Website_Portfolio_Copy.md verbatim, except `blurb` — the
      copy carries no description of the businesses themselves, so those
-     are written here. `domain` is both the button label and the href. */
+     are written here. `domain` is both the button label and the href.
+
+     The artwork is thematic stock rather than screenshots of the sites,
+     so `alt` describes the photograph. An empty `alt` marks an image as
+     decorative: correct, and never a wrong description, but a real one
+     is better — fill it in when the image lands. */
   const SITES = [
     {
       name: "Hack Her Health",
@@ -37,7 +42,8 @@
       category: "Events",
       functionality: "Registration Platform",
       domain: "hackherhealth.eventornado.com",
-      image: "assets/website-portfolio/hack-her-health.jpg"
+      image: "assets/website-portfolio/hack-her-health.jpg",
+      alt: "A cardboard placard reading \"Fight Like a Girl\" beside a raised-fist and Venus symbol, held up in front of a tower block"
     },
     {
       name: "Blue Cloud",
@@ -45,7 +51,8 @@
       category: "Events",
       functionality: "Registration Platform",
       domain: "hackathon2025.blue-cloud.org",
-      image: "assets/website-portfolio/blue-cloud.jpg"
+      image: "assets/website-portfolio/blue-cloud.jpg",
+      alt: "A whale drawn as a glowing low-poly wireframe of points and triangles on deep blue"
     },
     {
       name: "EMOD Open Sea Lab",
@@ -53,7 +60,8 @@
       category: "Events",
       functionality: "Registration Platform",
       domain: "opensealab.eu",
-      image: "assets/website-portfolio/emod-open-sea-lab.jpg"
+      image: "assets/website-portfolio/emod-open-sea-lab.jpg",
+      alt: ""
     },
     {
       name: "Skin IQ Aesthetics",
@@ -61,7 +69,8 @@
       category: "Health & Beauty",
       functionality: "E-Commerce Platform",
       domain: "skin-iq-aesthetics.co.uk",
-      image: "assets/website-portfolio/skin-iq-aesthetics.jpg"
+      image: "assets/website-portfolio/skin-iq-aesthetics.jpg",
+      alt: ""
     },
     {
       name: "Rosspark Hotel",
@@ -69,7 +78,8 @@
       category: "Hospitality",
       functionality: "E-Commerce // Booking Integration",
       domain: "rosspark.com",
-      image: "assets/website-portfolio/rosspark-hotel.jpg"
+      image: "assets/website-portfolio/rosspark-hotel.jpg",
+      alt: ""
     },
     {
       name: "Falafel Fresh",
@@ -77,7 +87,8 @@
       category: "Food & Beverage",
       functionality: "E-Commerce // Booking Integration",
       domain: "falafelfresh.co.uk",
-      image: "assets/website-portfolio/falafel-fresh.jpg"
+      image: "assets/website-portfolio/falafel-fresh.jpg",
+      alt: "A plate of falafel with a bowl of chopped salad, lemon and a herbed yoghurt dip on pale blue"
     },
     {
       name: "Mad About Fabrics",
@@ -85,7 +96,8 @@
       category: "Textiles",
       functionality: "E-Commerce",
       domain: "madaboutfabrics.com",
-      image: "assets/website-portfolio/mad-about-fabrics.jpg"
+      image: "assets/website-portfolio/mad-about-fabrics.jpg",
+      alt: ""
     },
     {
       name: "Bingham's Bees",
@@ -93,7 +105,8 @@
       category: "Beekeeping Supplies",
       functionality: "E-Commerce",
       domain: "binghamsbeesandcoops.com",
-      image: "assets/website-portfolio/binghams-bees.jpg"
+      image: "assets/website-portfolio/binghams-bees.jpg",
+      alt: "A honeycomb dripping honey with a bee in flight beside it, on a warm yellow ground"
     },
     {
       name: "Aris",
@@ -101,7 +114,8 @@
       category: "Fashion",
       functionality: "E-Commerce",
       domain: "arisweare.com",
-      image: "assets/website-portfolio/aris.jpg"
+      image: "assets/website-portfolio/aris.jpg",
+      alt: "A woman in a black vest and shorts walking in profile past a weathered concrete wall"
     }
   ];
 
@@ -151,7 +165,7 @@
             >
               <GlassImage
                 src={site.image}
-                alt={"The " + site.name + " website homepage"}
+                alt={site.alt}
                 className="h-[12.125rem]"
               />
 
