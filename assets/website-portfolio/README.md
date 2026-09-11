@@ -4,15 +4,15 @@
 the images from `Desktop/Website Portfolio Images` in here, renamed to match:
 
 ```
-hack-her-health.jpg       // Hack Her Health     — hackherhealth.eventornado.com
-blue-cloud.jpg            // Blue Cloud          — hackathon2025.blue-cloud.org
-emod-open-sea-lab.jpg     // EMOD Open Sea Lab   — opensealab.eu
-skin-iq-aesthetics.jpg    // Skin IQ Aesthetics  — skin-iq-aesthetics.co.uk
-rosspark-hotel.jpg        // Rosspark Hotel      — rosspark.com
-falafel-fresh.jpg         // Falafel Fresh      — falafelfresh.co.uk
-mad-about-fabrics.jpg     // Mad About Fabrics   — madaboutfabrics.com
-binghams-bees.jpg         // Bingham's Bees      — binghamsbeesandcoops.com
-aris.jpg                  // Aris                — arisweare.com
+hack-her-health.png       // Hack Her Health     — hackherhealth.eventornado.com
+blue-cloud.png            // Blue Cloud          — hackathon2025.blue-cloud.org
+emod-open-sea-lab.png     // EMOD Open Sea Lab   — opensealab.eu
+skin-iq-aesthetics.png    // Skin IQ Aesthetics  — skin-iq-aesthetics.co.uk
+rosspark-hotel.png        // Rosspark Hotel      — rosspark.com
+falafel-fresh.png         // Falafel Fresh      — falafelfresh.co.uk
+mad-about-fabrics.png     // Mad About Fabrics   — madaboutfabrics.com
+binghams-bees.png         // Bingham's Bees      — binghamsbeesandcoops.com
+aris.png                  // Aris                — arisweare.com
 ```
 
 The tile is a fixed 194px-tall glass surface and the image is `object-cover`,
