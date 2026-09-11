@@ -9,7 +9,7 @@ blue-cloud.jpg            // Blue Cloud          — hackathon2025.blue-cloud.or
 emod-open-sea-lab.jpg     // EMOD Open Sea Lab   — opensealab.eu
 skin-iq-aesthetics.jpg    // Skin IQ Aesthetics  — skin-iq-aesthetics.co.uk
 rosspark-hotel.jpg        // Rosspark Hotel      — rosspark.com
-falafel-fresh.jpg         // Falafel Fresh
+falafel-fresh.jpg         // Falafel Fresh      — falafelfresh.co.uk
 mad-about-fabrics.jpg     // Mad About Fabrics   — madaboutfabrics.com
 binghams-bees.jpg         // Bingham's Bees      — binghamsbeesandcoops.com
 aris.jpg                  // Aris                — arisweare.com

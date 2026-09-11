@@ -72,14 +72,11 @@
       image: "assets/website-portfolio/rosspark-hotel.jpg"
     },
     {
-      /* The copy repeats rosspark.com here, which is a copy-paste from the
-         row above. Left as supplied rather than guessed at — correct the
-         domain and the button, the href and the alt text all follow. */
       name: "Falafel Fresh",
       blurb: "A Mediterranean street-food kitchen serving falafel, wraps and mezze.",
       category: "Food & Beverage",
       functionality: "E-Commerce // Booking Integration",
-      domain: "rosspark.com",
+      domain: "falafelfresh.co.uk",
       image: "assets/website-portfolio/falafel-fresh.jpg"
     },
     {
