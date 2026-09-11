@@ -74,7 +74,7 @@
     },
     {
       name: "Rosspark Hotel",
-      blurb: "A four-star hotel with dining, weddings and event spaces in County Antrim.",
+      blurb: "A gorgeous hotel with dining, weddings and event spaces in County Antrim.",
       category: "Hospitality",
       functionality: "E-Commerce // Booking Integration",
       domain: "rosspark.com",
