@@ -61,7 +61,7 @@
       functionality: "Registration Platform",
       domain: "opensealab.eu",
       image: "assets/website-portfolio/emod-open-sea-lab.jpg",
-      alt: ""
+      alt: "A line of offshore wind turbines standing in calm sea under a clear blue sky"
     },
     {
       name: "Skin IQ Aesthetics",
@@ -70,7 +70,7 @@
       functionality: "E-Commerce Platform",
       domain: "skin-iq-aesthetics.co.uk",
       image: "assets/website-portfolio/skin-iq-aesthetics.jpg",
-      alt: ""
+      alt: "A smiling woman resting her fingertips lightly against her cheeks, on a pink ground"
     },
     {
       name: "Rosspark Hotel",
@@ -79,7 +79,7 @@
       functionality: "E-Commerce // Booking Integration",
       domain: "rosspark.com",
       image: "assets/website-portfolio/rosspark-hotel.jpg",
-      alt: ""
+      alt: "A guest standing at a plywood hotel check-in desk in a bright, plant-filled lobby"
     },
     {
       name: "Falafel Fresh",
@@ -97,7 +97,7 @@
       functionality: "E-Commerce",
       domain: "madaboutfabrics.com",
       image: "assets/website-portfolio/mad-about-fabrics.jpg",
-      alt: ""
+      alt: "A bright living room with floor-length cream curtains across three tall windows, a low white sofa and a potted tree"
     },
     {
       name: "Bingham's Bees",
