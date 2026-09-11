@@ -79,7 +79,7 @@
       functionality: "E-Commerce // Booking Integration",
       domain: "rosspark.com",
       image: "assets/website-portfolio/rosspark-hotel.jpg",
-      alt: "A guest standing at a plywood hotel check-in desk in a bright, plant-filled lobby"
+      alt: "A bride in a lace gown lying across a hotel bed dressed in cream and gold linen"
     },
     {
       name: "Falafel Fresh",
