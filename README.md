@@ -262,7 +262,7 @@ card by editing that array and nothing else.
   category: "Hospitality",
   functionality: "E-Commerce // Booking Integration",
   domain: "rosspark.com",
-  image: "assets/website-portfolio/rosspark-hotel.jpg"
+  image: "assets/website-portfolio/rosspark-hotel.png"
 }
 ```
 
@@ -288,12 +288,16 @@ the button. Links open in a new tab, which is what the up-right arrow signals.
 The nine cards are backed by `assets/website-portfolio/`, one file per card:
 
 ```
-hack-her-health.jpg     blue-cloud.jpg          emod-open-sea-lab.jpg
-skin-iq-aesthetics.jpg  rosspark-hotel.jpg      falafel-fresh.jpg
-mad-about-fabrics.jpg   binghams-bees.jpg       aris.jpg
+hack-her-health.png     blue-cloud.png          emod-open-sea-lab.png
+skin-iq-aesthetics.png  rosspark-hotel.png      falafel-fresh.png
+mad-about-fabrics.png   binghams-bees.png       aris.png
 ```
 
 The tile is the same fixed 194px-tall glass surface as the project cards, so any
 aspect ratio works and `GlassImage` drops the `<img>` on error — a missing file
 leaves the designed empty tile rather than a broken frame. See the README in that
 directory for the full name-to-card mapping.
+
+The artwork is thematic stock rather than screenshots of the sites, so each entry
+carries its own `alt` describing the photograph. An empty `alt` marks an image
+decorative — correct, and never a wrong description, but a real one is better.
