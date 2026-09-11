@@ -43,7 +43,7 @@
       functionality: "Registration Platform",
       domain: "hackherhealth.eventornado.com",
       image: "assets/website-portfolio/hack-her-health.jpg",
-      alt: "A cardboard placard reading \"Fight Like a Girl\" beside a raised-fist and Venus symbol, held up in front of a tower block"
+      alt: "A raised clenched fist, lit in deep purple against a purple ground"
     },
     {
       name: "Blue Cloud",
@@ -106,7 +106,7 @@
       functionality: "E-Commerce",
       domain: "binghamsbeesandcoops.com",
       image: "assets/website-portfolio/binghams-bees.jpg",
-      alt: "A honeycomb dripping honey with a bee in flight beside it, on a warm yellow ground"
+      alt: "A honeybee seen from above with its wings outstretched, on a flat yellow ground"
     },
     {
       name: "Aris",
