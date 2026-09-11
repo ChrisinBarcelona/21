@@ -16,6 +16,7 @@
      study passes its chapters — so there is one nav implementation. */
   const HOME_ITEMS = [
     { id: "hero", label: "Home", Icon: window.Home },
+    { id: "websites", label: "Websites", Icon: window.Layers },
     { id: "projects", label: "Projects", Icon: window.Navigation },
     { id: "skills", label: "Skills", Icon: window.Star },
     { id: "contact", label: "Contact", Icon: window.ArrowUpRight }

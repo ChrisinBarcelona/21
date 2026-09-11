@@ -77,7 +77,7 @@
 
   function JourneyMap({ phases = [], lanes = ["Actions", "Touchpoints", "Thinking"], label = "User journey map" }) {
     /* 12rem is the narrowest a lane cell stays readable at. Five phases
-       then fit a 1920 viewport without scrolling; more than that, or a
+       then fit a 1440 viewport without scrolling; more than that, or a
        smaller screen, and ScrollX takes over. */
     const columns = { gridTemplateColumns: `repeat(${phases.length}, minmax(12rem, 1fr))` };
 

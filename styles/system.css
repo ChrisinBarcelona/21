@@ -9,21 +9,21 @@
 /* ------------------------------------------------------------------
    Scale.
 
-   The whole page is drawn at 1.5x. It is done here, once, rather than
-   by rewriting every size: the root font size is the multiplier, and
-   every length in the design is expressed in rem, so type, spacing,
-   radii, stroke and blur all scale together and the proportions of
-   the Figma frame are preserved exactly.
+   The whole page is drawn at 1.125x. It is done here, once, rather
+   than by rewriting every size: the root font size is the multiplier,
+   and every length in the design is expressed in rem, so type,
+   spacing, radii, stroke and blur all scale together and the
+   proportions of the Figma frame are preserved exactly.
 
-   150% rather than a flat 24px on purpose — a reader who has raised
-   their browser's default font size still gets 1.5x *their* size, so
-   this compounds with the accessibility setting instead of
+   112.5% rather than a flat 18px on purpose — a reader who has raised
+   their browser's default font size still gets 1.125x *their* size,
+   so this compounds with the accessibility setting instead of
    overriding it.
 
    Converting a Figma px value: rem = px / 16. It then renders at
-   1.5x that px value here.
+   1.125x that px value here.
    ------------------------------------------------------------------ */
-html { font-size: 150%; }
+html { font-size: 112.5%; }
 
 /* ------------------------------------------------------------------
    Design tokens — mirrors the Figma variable collection so the values
@@ -174,6 +174,23 @@ main:focus, main:focus-visible { outline: none; }
 .glass-raised:hover { background: var(--color-bg-glass-raised-hover); }
 
 /* ------------------------------------------------------------------
+   Stretched link. A portfolio card is entirely clickable, but wrapping
+   the card in an <a> would nest the CTA inside it. Instead the CTA's
+   ::after is stretched over the whole card, so the accessibility tree
+   carries exactly one link while the full surface is the hit area.
+
+   The card is already positioned (`.liquid-glass` sets
+   `position: relative`) and the anchor is not, so the overlay resolves
+   against the card. z-index 3 clears the glass edge ring at 2.
+   ------------------------------------------------------------------ */
+.stretched-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+/* ------------------------------------------------------------------
    Reduced motion. The entrance animations are driven by Framer Motion
    from JS, so the components read the same preference and drop the
    travel and blur themselves; this covers the CSS-driven parts.
@@ -218,7 +235,7 @@ main:focus, main:focus-visible { outline: none; }
   gap: 0.75rem;
 }
 
-@media (min-width: 1536px) {
+@media (min-width: 1152px) {
   .bmc-grid {
     grid-template-columns: repeat(5, 1fr);
     grid-template-areas:
