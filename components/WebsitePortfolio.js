@@ -42,7 +42,7 @@
       category: "Events",
       functionality: "Registration Platform",
       domain: "hackherhealth.eventornado.com",
-      image: "assets/website-portfolio/hack-her-health.png",
+      image: "assets/website-portfolio/hack-her-health.webp",
       alt: "A raised clenched fist, lit in deep purple against a purple ground"
     },
     {
@@ -51,7 +51,7 @@
       category: "Events",
       functionality: "Registration Platform",
       domain: "hackathon2025.blue-cloud.org",
-      image: "assets/website-portfolio/blue-cloud.png",
+      image: "assets/website-portfolio/blue-cloud.webp",
       alt: "A whale drawn as a glowing low-poly wireframe of points and triangles on deep blue"
     },
     {
@@ -60,7 +60,7 @@
       category: "Events",
       functionality: "Registration Platform",
       domain: "opensealab.eu",
-      image: "assets/website-portfolio/emod-open-sea-lab.png",
+      image: "assets/website-portfolio/emod-open-sea-lab.webp",
       alt: "A line of offshore wind turbines standing in calm sea under a clear blue sky"
     },
     {
@@ -69,7 +69,7 @@
       category: "Health & Beauty",
       functionality: "E-Commerce Platform",
       domain: "skin-iq-aesthetics.co.uk",
-      image: "assets/website-portfolio/skin-iq-aesthetics.png",
+      image: "assets/website-portfolio/skin-iq-aesthetics.webp",
       alt: "A smiling woman resting her fingertips lightly against her cheeks, on a pink ground"
     },
     {
@@ -78,7 +78,7 @@
       category: "Hospitality",
       functionality: "E-Commerce // Booking Integration",
       domain: "rosspark.com",
-      image: "assets/website-portfolio/rosspark-hotel.png",
+      image: "assets/website-portfolio/rosspark-hotel.webp",
       alt: "A bride in a lace gown lying across a hotel bed dressed in cream and gold linen"
     },
     {
@@ -87,7 +87,7 @@
       category: "Food & Beverage",
       functionality: "E-Commerce // Booking Integration",
       domain: "falafelfresh.co.uk",
-      image: "assets/website-portfolio/falafel-fresh.png",
+      image: "assets/website-portfolio/falafel-fresh.webp",
       alt: "A plate of falafel with a bowl of chopped salad, lemon and a herbed yoghurt dip on pale blue"
     },
     {
@@ -96,7 +96,7 @@
       category: "Textiles",
       functionality: "E-Commerce",
       domain: "madaboutfabrics.com",
-      image: "assets/website-portfolio/mad-about-fabrics.png",
+      image: "assets/website-portfolio/mad-about-fabrics.webp",
       alt: "A bright living room with floor-length cream curtains across three tall windows, a low white sofa and a potted tree"
     },
     {
@@ -105,7 +105,7 @@
       category: "Beekeeping Supplies",
       functionality: "E-Commerce",
       domain: "binghamsbeesandcoops.com",
-      image: "assets/website-portfolio/binghams-bees.png",
+      image: "assets/website-portfolio/binghams-bees.webp",
       alt: "A honeybee seen from above with its wings outstretched, on a flat yellow ground"
     },
     {
@@ -114,7 +114,7 @@
       category: "Fashion",
       functionality: "E-Commerce",
       domain: "arisweare.com",
-      image: "assets/website-portfolio/aris.png",
+      image: "assets/website-portfolio/aris.webp",
       alt: "A woman in a black vest and shorts walking in profile past a weathered concrete wall"
     }
   ];

@@ -262,7 +262,7 @@ card by editing that array and nothing else.
   category: "Hospitality",
   functionality: "E-Commerce // Booking Integration",
   domain: "rosspark.com",
-  image: "assets/website-portfolio/rosspark-hotel.png"
+  image: "assets/website-portfolio/rosspark-hotel.webp"
 }
 ```
 
@@ -288,9 +288,9 @@ the button. Links open in a new tab, which is what the up-right arrow signals.
 The nine cards are backed by `assets/website-portfolio/`, one file per card:
 
 ```
-hack-her-health.png     blue-cloud.png          emod-open-sea-lab.png
-skin-iq-aesthetics.png  rosspark-hotel.png      falafel-fresh.png
-mad-about-fabrics.png   binghams-bees.png       aris.png
+hack-her-health.webp     blue-cloud.webp          emod-open-sea-lab.webp
+skin-iq-aesthetics.webp  rosspark-hotel.webp      falafel-fresh.webp
+mad-about-fabrics.webp   binghams-bees.webp       aris.webp
 ```
 
 The tile is the same fixed 194px-tall glass surface as the project cards, so any
