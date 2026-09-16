@@ -17,6 +17,7 @@
   const HOME_ITEMS = [
     { id: "hero", label: "Home", Icon: window.Home },
     { id: "websites", label: "Websites", Icon: window.Layers },
+    { id: "visual-design", label: "Visual Design", Icon: window.Palette },
     { id: "projects", label: "Projects", Icon: window.Navigation },
     { id: "skills", label: "Skills", Icon: window.Star },
     { id: "contact", label: "Contact", Icon: window.ArrowUpRight }

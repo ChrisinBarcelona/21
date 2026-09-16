@@ -18,6 +18,7 @@
   const LINKS = [
     { id: "hero", label: "Hero" },
     { id: "websites", label: "Websites" },
+    { id: "visual-design", label: "Visual Design" },
     { id: "projects", label: "Projects" },
     { id: "skills", label: "Skills" },
     { id: "contact", label: "Contact" }
