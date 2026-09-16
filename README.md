@@ -28,6 +28,9 @@ styles/
 assets/
   projects/             the three project thumbnails
   website-portfolio/    the client site thumbnails (see "Website Portfolio thumbnails")
+  oak/                  the Oak National Academy artwork (see "Visual Design")
+  oak/guidelines/       the brand guidelines deck, one WebP per PDF page
+  ona-guidelines.pdf    the source brand guidelines, linked for download
 components/
   Icons.js              lucide glyphs: ArrowUpRight, Play, Home, Navigation, Star
   Motion.js             the reduced-motion hook and the shared reveal helpers
@@ -38,9 +41,12 @@ components/
   BottomNav.js          floating glass pill with scroll-spy
   Hero.js               section 1 — starfield video
   WebsitePortfolio.js   section 2 — Website Portfolio (client sites)
-  Projects.js           section 3 — Latest Projects
-  Skills.js             section 4 — What We Love
-  Footer.js             section 5 — contact + colophon
+  VisualDesign.js       section 3 — Visual Design, and the dialog it opens
+  OakNationalAcademy.js the Oak National Academy case study, shown as a modal
+  GuidelinesCarousel.js the 55-page brand guidelines deck, flick-through
+  Projects.js           section 4 — Latest Projects
+  Skills.js             section 5 — What We Love
+  Footer.js             section 6 — contact + colophon
   GlassImage.js         artwork in a glass tile, degrading to the tile alone
   App.js                composition + ReactDOM root
   case/                 the case study building blocks — see below
@@ -301,3 +307,68 @@ directory for the full name-to-card mapping.
 The artwork is thematic stock rather than screenshots of the sites, so each entry
 carries its own `alt` describing the photograph. An empty `alt` marks an image
 decorative — correct, and never a wrong description, but a real one is better.
+
+
+## Visual Design
+
+A third card section, between Website Portfolio and Latest Projects, holding the
+brand-identity work. One card today — Oak National Academy — sitting in the first
+column of the same three-column grid, so a second piece drops in beside it without
+the section being rebuilt.
+
+The card is taller than its neighbours for one reason: its artwork is. An Instagram
+story is 9:16, and `GlassImage` takes a `ratio` so the tile adopts the artwork's
+proportions rather than cropping a portrait asset into the 194px landscape band the
+other cards use. Nothing is cut off.
+
+### The case study is a dialog, not a page
+
+Clicking the card opens `OakNationalAcademy` rather than navigating. The dialog owns
+what a page would otherwise get for free — it locks the body behind it, takes focus
+on open, traps Tab, closes on Escape or a backdrop click, and hands focus back to
+the card on the way out.
+
+It is portalled to `document.body`. The section that owns it sits inside the video
+band's `z-10` stacking context, which would trap the overlay underneath the `z-50`
+bottom nav however high its own `z-index` went.
+
+One thing to watch when pinning anything inside it: `.liquid-glass` and
+`.liquid-glass-strong` both set `position: relative`, and `system.css` loads after
+Tailwind, so a `fixed` *utility* silently loses to them. The close button sets
+`position` in a style attribute instead.
+
+### The guidelines carousel
+
+The work was judged on adherence, so the deck leads — the reader needs the yardstick
+in hand before the assets are worth looking at. All 55 pages are pre-rendered from
+`ona-guidelines.pdf` at 1400px wide, which only stays cheap (35 KB a page) because
+just the current page and its two neighbours are ever fetched. The source PDF is
+still linked for anyone who wants it.
+
+Three ways through, because the obvious control differs by device: the arrows on a
+pointer, a drag on touch, the arrow keys once the strip has focus. A dot per page
+would be unreadable at 55, so progress is a bar plus a live-announced counter.
+
+### Oak National Academy artwork
+
+Twenty assets in `assets/oak/`, grouped by what they were made for:
+
+```
+instagram-story-1..5.webp        9:16    the story set (story 1 is the card preview)
+instagram-post-1..4.webp         1:1     the carousel slides
+instagram-post-5..6.webp         1:1     the single posts
+event-tornado-banner-1..2.webp   8:3     the wide event headers
+linkedin-post-1..2.webp          1.91:1  the social share cards
+banner-blog-1..2.webp            2.4:1   the blog headers
+direct-mail-1..3.webp            ~5:7    the email circulators
+```
+
+They arrived at print scale — up to 8000px wide, 7.8 MB the set. Downscaled to twice
+the widest size each is ever rendered at and re-encoded at quality 82, that is 1.9 MB.
+Every tile passes its own ratio, so each asset shows whole rather than cropped to a
+common shape.
+
+Figma places only fourteen of them. The LinkedIn share cards and blog headers are
+folded into "Facebook / Linkedin Header Banners" and the remaining two circulators
+into "Email Circulator", on the strength of their proportions and their names — no
+section was invented for them.
