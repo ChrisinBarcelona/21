@@ -21,41 +21,12 @@
   const FadingVideo = window.FadingVideo;
   const BlurText = window.BlurText;
   const ArrowUpRight = window.ArrowUpRight;
-  const Play = window.Play;
+  const ContactCTA = window.ContactCTA;
   const useReducedMotion = window.useReducedMotion;
   const reveal = window.reveal;
 
   const HERO_VIDEO =
     "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_080021_d598092b-c4c2-4e53-8e46-94cf9064cd50.mp4";
-
-  /* "Let's talk" hands the reader a message that is already written: their
-     mail app opens on a new mail, addressed here, with a subject and an
-     opening line in place, cursor under it. The ask drops from "compose an
-     email to a stranger" to "press send".
-
-     Line breaks are CRLF rather than \n because that is what RFC 6068 asks
-     for, and Outlook is the client that notices — it renders a lone %0A as
-     one long run-on line.
-
-     `encodeURIComponent` leaves !'()* alone, which is legal in a query but
-     not uniformly handled once a mail client re-parses the string, so
-     `escape` finishes the job. The apostrophe in "I'd" is the one that
-     matters here.
-
-     A mail client is not guaranteed: a reader with no handler registered
-     presses this and sees nothing happen. That is why the address is also
-     in the footer as plain, selectable text. */
-  const CONTACT = "chris@chriskelly.it";
-  const SUBJECT = "Project enquiry";
-  const BODY = ["Hi Chris,", "", "I'd like to discuss a project with you.", "", ""].join("\r\n");
-
-  const escape = (value) =>
-    encodeURIComponent(value).replace(/[!'()*]/g, (c) => "%" + c.charCodeAt(0).toString(16).toUpperCase());
-
-  const MAILTO =
-    "mailto:" + CONTACT +
-    "?subject=" + escape(SUBJECT) +
-    "&body=" + escape(BODY);
 
   function Hero() {
     const reduced = useReducedMotion();
@@ -95,13 +66,7 @@
               View work
               <ArrowUpRight className="h-5 w-5 shrink-0" />
             </a>
-            <a
-              href={MAILTO}
-              className="rounded-full flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium leading-5 text-ink-primary font-body"
-            >
-              Let&rsquo;s talk
-              <Play className="h-5 w-5 shrink-0" />
-            </a>
+            <ContactCTA />
           </motion.div>
         </div>
       </section>

@@ -40,6 +40,7 @@ components/
   TopBar.js             sticky wordmark
   BottomNav.js          floating glass pill with scroll-spy
   Hero.js               section 1 — starfield video
+  ContactCTA.js         the hero's "Let's talk", and its no-mail-client fallback
   WebsitePortfolio.js   section 2 — Latest Websites (client sites)
   VisualDesign.js       section 3 — Visual Design, and the dialog it opens
   OakNationalAcademy.js the Oak National Academy case study, shown as a modal
@@ -254,6 +255,50 @@ They are 747x388, which is close enough to the tile's 1.92:1 ratio that `object-
 barely crops. Any aspect ratio works though — the tile is a fixed 194px-tall glass
 surface. `ProjectImage` drops the `<img>` on error, so a missing or renamed file leaves
 the designed empty glass tile rather than a broken frame.
+
+## "Let's talk"
+
+`ContactCTA.js` owns the hero's second button. It is a `mailto:` carrying a
+subject and an opening line, so the reader's mail app opens on a message that
+is already written — `Project enquiry`, "Hi Chris, / I'd like to discuss a
+project with you." — with the cursor on the blank line under it.
+
+Two details keep that intact across clients: line breaks are CRLF, as RFC 6068
+asks and as Outlook insists (it renders a lone `%0A` as one run-on line), and
+the encoder escapes `!'()*`, which `encodeURIComponent` leaves alone — the
+apostrophe in "I'd" is the one that matters.
+
+**A `mailto:` can fail silently.** It is a request to the operating system, not
+a navigation, and nothing tells the page whether anyone answered. On a phone
+someone always does. On a desktop with no mail client registered — most people
+who live in webmail — the click does nothing at all: no error, no dialog.
+
+So the page watches. Clicking starts a 1.5s timer; any real handoff (an app
+taking focus, an OS "choose an application" dialog) blurs the window or hides
+the document and cancels it. If neither happens, nothing opened, and a panel
+offers the two routes that need no mail client: copy the address, or compose
+the same pre-filled message in Gmail. The timer is deliberately generous —
+firing late costs nothing, firing early interrupts someone whose mail app was
+just slow to launch.
+
+The wait only runs on a fine pointer. Touch devices always have a mail app, and
+an iOS "Create mail with" sheet draws over a page that is still visible and
+still focused, so the timer would fire *behind* a sheet already doing the right
+thing.
+
+The panel opens downward, or upward when the space below it is under 260px —
+measured in the same tick that opens it, so it never paints one way and jumps.
+It sits at `z-[60]`, above the floating nav's `z-50`. It is also the one
+surface on the page that is filled (`rgba(0,0,0,0.82)`) rather than glass
+alone: everything else wearing the 1%-white glass carries large type over
+chosen ground, while this panel is 14px and opens wherever the reader happens
+to be — over the headline, or over the brightest frame of the starfield. The
+fill sits behind the glass, so the hairline ring and shadow still read as the
+rest of the system.
+
+The footer's address line stays a plain `mailto:` with no pre-fill. It is a
+contact detail rather than a project pitch, and it is the last resort in plain,
+selectable text.
 
 ## Latest Websites
 
