@@ -40,6 +40,7 @@ components/
   TopBar.js             sticky wordmark
   BottomNav.js          floating glass pill with scroll-spy
   Hero.js               section 1 — starfield video
+  ContactModal.js       the "Let's talk" dialog — contact form, posts to Web3Forms
   WebsitePortfolio.js   section 2 — Latest Websites (client sites)
   VisualDesign.js       section 3 — Visual Design, and the dialog it opens
   OakNationalAcademy.js the Oak National Academy case study, shown as a modal
@@ -278,22 +279,63 @@ the designed empty glass tile rather than a broken frame.
 
 ## "Let's talk"
 
-The hero's second button is a plain `mailto:` in `Hero.js`, carrying a subject
-and an opening line so the reader's mail app opens on a message that is already
-written — `Project enquiry`, "Hi Chris, / I'd like to discuss a project with
-you." — with the cursor on the blank line under it.
+The hero's second button opens `ContactModal.js` — a dialog with a real form,
+rather than a `mailto:`. A `mailto:` hands the message to the operating system
+and hopes: on a phone that works, on a desktop with no mail client registered it
+does nothing at all, silently. The form posts to
+[Web3Forms](https://web3forms.com), so a message arrives whatever the reader has
+installed, and the page can say plainly whether it went.
 
-Two details keep that intact across clients: line breaks are CRLF, as RFC 6068
-asks and as Outlook insists (it renders a lone `%0A` as one run-on line), and
-the encoder escapes `!'()*`, which `encodeURIComponent` leaves alone — the
-apostrophe in "I'd" is the one that matters.
+### The one thing to configure
 
-Nothing wraps it. A `mailto:` does nothing on a desktop with no mail client
-registered, and that is the browser's business to solve, not the page's — the
-address is in the footer in plain text for anyone it fails.
+`ACCESS_KEY` at the top of `ContactModal.js`. Get one free from web3forms.com by
+entering `chris@chriskelly.it` — the key arrives by mail — and paste it between
+the quotes. Nothing else changes, and the form is live on the next deploy.
 
-The footer's address line is the same `mailto:` without the pre-fill. It is a
-contact detail rather than a project pitch.
+**Until that key is set, every submission fails** and the reader is shown the
+address to mail instead.
+
+The key is public in the page source. That is how the service works: it names
+the destination, it is not a secret, and it can only ever deliver to the address
+it was issued for. It is also why the question below matters.
+
+### The form
+
+`To chris@chriskelly.it` is shown as a line of text, not a field — the
+destination is not the visitor's to change. Name and email are required, so a
+reply has somewhere to go; the service sends from its own address, so without
+them an enquiry arrives unanswerable. Subject defaults to `Project enquiry` and
+the message to "Hi Chris, / I'd like to discuss a project with you.", both
+editable.
+
+The spam check is *What is two plus two, written as a word?*, answered `four` in
+any mix of case — it is trimmed and lower-cased before comparison, so `FOUR`,
+`Four` and `  four  ` all pass. Spelled out rather than `2 + 2` so a bot filling
+number fields has no pattern to match. Alongside it sits Web3Forms' own
+honeypot, a hidden `botcheck` the service drops a submission for filling in.
+
+Glass does not render on an `<input>` or `<textarea>` — the ring is a `::before`
+and neither element reliably carries one — so the surface goes on a wrapper with
+the control bare inside it. That is also what lets the focus ring trace the whole
+field rather than the text box: `.field:focus-within` in `system.css`.
+
+### The dialog
+
+The mechanics are the case study's: body locked behind it, focus taken on open
+and handed back to the button on close, Tab trapped inside, Escape closes,
+portalled to `<body>` so the floating nav cannot draw over it.
+
+Two deliberate differences. **A press on the backdrop does not close it** —
+there is typing in here to lose, and a stray click beside a form is not a request
+to discard it. And that press takes `preventDefault()`, because otherwise it
+blurs focus onto `<body>`, which fires no `focusin` for the guard to catch, and
+the next Tab walks into the page behind.
+
+Escape listens on the document rather than the dialog, for the same reason: a
+handler waiting for the event to bubble out of the dialog never hears it once
+focus has left.
+
+A failed send keeps the form exactly as it was, so nothing typed is lost.
 
 ## Latest Websites
 

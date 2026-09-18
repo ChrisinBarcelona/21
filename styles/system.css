@@ -95,6 +95,16 @@ html, body { overscroll-behavior-y: none; }
 /* main takes focus from the skip link but should not draw a ring */
 main:focus, main:focus-visible { outline: none; }
 
+/* A form control wearing glass has the surface on a wrapper, because an
+   <input> carries no ::before to draw the ring with. Focus follows: the
+   control drops its own outline and the wrapper takes one, so the ring
+   traces the whole field. `.liquid-glass` clips its children, not its
+   own outline, so the ring is drawn in full. */
+.field:focus-within {
+  outline: 0.125rem solid var(--focus-ring);
+  outline-offset: 0.1875rem;
+}
+
 .skip-link {
   position: fixed;
   top: 0.75rem;
