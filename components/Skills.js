@@ -9,7 +9,7 @@
 
   const SKILLS = [
     {
-      title: "AI First Web Design",
+      title: "Web Design",
       body: "We leverage Claude's power to deliver AI-first, best-in-class websites."
     },
     {

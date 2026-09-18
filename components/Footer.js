@@ -11,7 +11,6 @@
   const DETAILS = [
     { label: "Studio Name", value: "CHRIS KELLY design studio" },
     { label: "Address", value: "Calle Paris, 157, 08036 Barcelona" },
-    { label: "Phone", value: "+34 603 766 507", href: "tel:+34603766507" },
     { label: "Email", value: "chris@chriskelly.it", href: "mailto:chris@chriskelly.it" }
   ];
 
