@@ -6,6 +6,24 @@ looping background videos and a shared liquid-glass design system.
 Implemented from Figma: **inri-#005 — CKLY DESIGN**, frame `Total Website`
 (`0:342`).
 
+## Cache busting
+
+Every local script and stylesheet in `index.html` and `project.html` carries
+`?v=<version>`.
+
+GitHub Pages serves these files with a ten-minute cache and no fingerprint in
+their names, so a browser that already has the page keeps running the
+JavaScript it downloaded before. The markup updates; the copy living inside the
+components does not — which looks exactly like a deploy that did not happen.
+
+**Bump the string on any deploy that changes a file under `components/` or
+`styles/`.** It is one find-and-replace across the two HTML files. Editing only
+the HTML does not need a bump.
+
+The alternative — a timestamp generated per page load — would defeat caching for
+every visitor on every visit, on a page that already asks them to download 3MB
+of Babel. The version string costs one edit per deploy and nothing at runtime.
+
 ## Running it
 
 Everything is CDN-only, but the components are loaded as separate
