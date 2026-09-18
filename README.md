@@ -280,6 +280,22 @@ surface, 194px image tile, 24px padding and hover lift, closing on two metadata
 chips and a CTA instead of a status line. Descriptions vary in length, so the CTA
 carries `mt-auto` and the buttons line up across a row.
 
+**Three at a time.** Nine cards at once is a wall, so the section opens on the
+first three and grows a row per press of **See more** — 3, then 6, then 9, at
+which point the button retires. `STEP` at the top of the file is the batch size
+and matches the widest grid column count; the list is `SITES.slice(0, shown)`, so
+adding a card to `SITES` is still the only edit a new site needs. The cards keep
+`revealOnScroll`, so a row that lands below the fold animates in when it is
+reached rather than popping in unseen.
+
+A press moves focus to the first name in the new row — the `<h3>` carries
+`tabIndex={-1}` for it — because the last press unmounts the button and would
+otherwise drop focus on the floor, leaving the row that just arrived a long walk
+back down the tab order. `focus({ preventScroll: true })` keeps the page still: a
+reader who clicked asked for more cards, not to be moved. The *Showing 6 of 9
+websites* line beside the button is `aria-live="polite"`, so the reveal is
+announced instead of the list silently doubling.
+
 **The whole card is the link.** Wrapping the `<article>` in an `<a>` would nest the
 CTA inside another interactive, so the CTA carries `.stretched-link` instead — its
 `::after` is stretched over the card at `z-index: 3`, clearing the glass edge ring
@@ -291,7 +307,9 @@ the button. Links open in a new tab, which is what the up-right arrow signals.
 
 ### Website Portfolio thumbnails
 
-The nine cards are backed by `assets/website-portfolio/`, one file per card:
+The nine cards are backed by `assets/website-portfolio/`, one file per card. A
+card behind **See more** is not in the DOM, so the first paint fetches three
+thumbnails and each press fetches the next three:
 
 ```
 hack-her-health.webp     blue-cloud.webp          emod-open-sea-lab.webp

@@ -17,13 +17,27 @@
    one alone would collapse the overlay back onto the button.
 
    Card heights vary with the length of the description, so the CTA is
-   pushed down by `mt-auto`: the buttons line up across a row. */
+   pushed down by `mt-auto`: the buttons line up across a row.
+
+   Nine cards at once is a wall. The section opens on the first three and
+   grows a row at a time behind "See more", so the page asks for one
+   decision rather than nine. The button retires once the last row is out;
+   the count beside it is a live region, so the reveal is announced rather
+   than silently doubling the list under a screen reader.
+
+   A press moves focus to the first name in the new row. Without it the
+   final press would drop focus on the floor as the button unmounts, and
+   the row that just arrived would sit behind however many tabs it takes
+   to walk back down to it. `preventScroll` keeps the page still — someone
+   who pressed the button asked for more cards, not to be moved. */
 (function () {
+  const { useEffect, useRef, useState } = React;
   const motion = window.Motion.motion;
   const GlassImage = window.GlassImage;
   const BlurText = window.BlurText;
   const Kicker = window.Kicker;
   const ArrowUpRight = window.ArrowUpRight;
+  const ArrowDown = window.ArrowDown;
   const useReducedMotion = window.useReducedMotion;
   const revealOnScroll = window.revealOnScroll;
 
@@ -119,6 +133,9 @@
     }
   ];
 
+  /* One row of the lg grid: the batch "See more" adds each press. */
+  const STEP = 3;
+
   /* A metadata pill. Same shape as the case study's Chip, declared here
      because that primitive only loads on project.html. */
   function Chip({ children }) {
@@ -131,6 +148,27 @@
 
   function WebsitePortfolio() {
     const reduced = useReducedMotion();
+    const [shown, setShown] = useState(STEP);
+    const gridRef = useRef(null);
+    /* Set by the button, read by the effect below: a reveal moves focus,
+       the first paint does not. */
+    const revealed = useRef(false);
+
+    const visible = SITES.slice(0, shown);
+    const remaining = SITES.length - shown;
+
+    useEffect(() => {
+      if (!revealed.current) return;
+      revealed.current = false;
+      const card = gridRef.current && gridRef.current.children[shown - STEP];
+      const name = card && card.querySelector("h3");
+      if (name) name.focus({ preventScroll: true });
+    }, [shown]);
+
+    const showMore = () => {
+      revealed.current = true;
+      setShown((n) => Math.min(n + STEP, SITES.length));
+    };
 
     return (
       <section
@@ -155,8 +193,11 @@
           />
         </div>
 
-        <div className="mt-[3.375rem] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {SITES.map((site, i) => (
+        <div
+          ref={gridRef}
+          className="mt-[3.375rem] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          {visible.map((site, i) => (
             <motion.article
               key={site.name}
               {...revealOnScroll(reduced, 0.15 + (i % 3) * 0.15)}
@@ -173,7 +214,10 @@
                 Website
               </Kicker>
 
-              <h3 className="font-heading italic text-ink-primary text-3xl md:text-4xl leading-9 tracking-[-0.0625rem]">
+              <h3
+                tabIndex={-1}
+                className="font-heading italic text-ink-primary text-3xl md:text-4xl leading-9 tracking-[-0.0625rem] focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
+              >
                 {site.name}
               </h3>
 
@@ -202,6 +246,26 @@
               </div>
             </motion.article>
           ))}
+        </div>
+
+        <div className="mt-10 flex flex-col items-center gap-3">
+          <p
+            aria-live="polite"
+            className="font-body text-sm leading-[1.1875rem] text-ink-tertiary"
+          >
+            {"Showing " + shown + " of " + SITES.length + " websites"}
+          </p>
+
+          {remaining > 0 && (
+            <button
+              type="button"
+              onClick={showMore}
+              className="liquid-glass-strong glass-lift flex items-center justify-center gap-2 rounded-full px-6 py-3 font-body text-sm font-medium leading-5 text-ink-primary"
+            >
+              See more
+              <ArrowDown className="h-5 w-5 shrink-0" />
+            </button>
+          )}
         </div>
       </section>
     );
