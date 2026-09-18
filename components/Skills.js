@@ -10,7 +10,7 @@
   const SKILLS = [
     {
       title: "Web Design",
-      body: "We design and build fast, beautiful websites that turn visitors into customers."
+      body: "We design and build websites that look extraordinary and sell relentlessly."
     },
     {
       title: "UX Strategy",
