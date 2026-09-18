@@ -1,4 +1,4 @@
-/* Projects — "Latest Projects". Sits transparent over the shared video band,
+/* Projects — "Coming Soon". Sits transparent over the shared video band,
    so every surface here carries its own glass. */
 (function () {
   const motion = window.Motion.motion;
@@ -55,7 +55,7 @@
             as="h2"
             id="projects-heading"
             align="left"
-            text="Latest Projects"
+            text="Coming Soon"
             delay={100}
             className="font-heading italic text-ink-primary text-4xl md:text-5xl lg:text-[3.75rem] leading-[0.9] tracking-[-0.125rem] lg:tracking-[-0.1875rem]"
           />

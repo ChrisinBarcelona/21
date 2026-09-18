@@ -60,14 +60,14 @@
             className="flex flex-wrap items-center justify-center gap-4 sm:gap-6"
           >
             <a
-              href="#projects"
+              href="#websites"
               className="liquid-glass-strong rounded-full flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium leading-5 text-ink-primary font-body"
             >
               View work
               <ArrowUpRight className="h-5 w-5 shrink-0" />
             </a>
             <a
-              href="#contact"
+              href="mailto:chris@chriskelly.it"
               className="rounded-full flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium leading-5 text-ink-primary font-body"
             >
               Let&rsquo;s talk

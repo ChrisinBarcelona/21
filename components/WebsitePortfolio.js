@@ -1,5 +1,6 @@
-/* WebsitePortfolio — "Website Portfolio". The client work, above Latest
-   Projects, sharing the same video band and so carrying its own glass.
+/* WebsitePortfolio — "Latest Websites". The client work, above the
+   Coming Soon band, sharing the same video band and so carrying its own
+   glass.
 
    The card is the Projects card with a longer spine: same 20px glass
    surface, same 194px image tile, same 24px padding and gap, same
@@ -187,7 +188,7 @@
             as="h2"
             id="websites-heading"
             align="left"
-            text="Website Portfolio"
+            text="Latest Websites"
             delay={100}
             className="font-heading italic text-ink-primary text-4xl md:text-5xl lg:text-[3.75rem] leading-[0.9] tracking-[-0.125rem] lg:tracking-[-0.1875rem]"
           />

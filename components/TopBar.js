@@ -20,7 +20,7 @@
             transition={entrance.transition}
             className="on-video pointer-events-auto font-heading italic text-ink-primary text-2xl md:text-[1.875rem] leading-[1.875rem] tracking-[-0.046875rem]"
           >
-            ckly.design
+            chriskelly.it
           </motion.a>
         </div>
       </header>

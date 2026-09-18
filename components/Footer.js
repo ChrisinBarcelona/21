@@ -9,14 +9,14 @@
   const revealOnScroll = window.revealOnScroll;
 
   const DETAILS = [
-    { label: "Studio Name", value: "CKLY Design Studio" },
+    { label: "Studio Name", value: "CHRIS KELLY design studio" },
     { label: "Address", value: "Calle Paris, 157, 08036 Barcelona" },
     { label: "Phone", value: "+34 603 766 507", href: "tel:+34603766507" },
-    { label: "Email", value: "studio@ckly.studio", href: "mailto:studio@ckly.studio" }
+    { label: "Email", value: "chris@chriskelly.it", href: "mailto:chris@chriskelly.it" }
   ];
 
   const LINKS = [
-    { id: "hero", label: "Hero" },
+    { id: "hero", label: "Back to Top" },
     { id: "websites", label: "Websites" },
     { id: "visual-design", label: "Visual Design" },
     { id: "projects", label: "Projects" },
@@ -35,7 +35,7 @@
           <motion.div {...revealOnScroll(reduced)} className="pt-20 pb-10 max-w-[26.25rem]">
             <div className="flex flex-col gap-5">
               <p className="font-heading italic text-ink-primary text-[1.875rem] leading-[1.875rem] tracking-[-0.046875rem]">
-                ckly.design
+                chriskelly.it
               </p>
 
               <p className="font-body font-light text-base leading-5 text-ink-secondary">
@@ -66,7 +66,7 @@
 
             <div className="mt-6 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
               <p className="font-body text-[0.6875rem] leading-[0.875rem] text-ink-tertiary">
-                © 2027 All Rights Reserved. CKLY DESIGN STUDIO
+                © 2027 All Rights Reserved. CHRIS KELLY design studio
               </p>
 
               <nav className="flex flex-wrap items-center gap-6 md:gap-8" aria-label="Footer">

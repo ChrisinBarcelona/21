@@ -1,6 +1,6 @@
-# ckly.design
+# chriskelly.it
 
-The CKLY Design Studio landing page — a single scroll with five sections, two
+The CHRIS KELLY design studio landing page — a single scroll with five sections, two
 looping background videos and a shared liquid-glass design system.
 
 Implemented from Figma: **inri-#005 — CKLY DESIGN**, frame `Total Website`
@@ -40,11 +40,11 @@ components/
   TopBar.js             sticky wordmark
   BottomNav.js          floating glass pill with scroll-spy
   Hero.js               section 1 — starfield video
-  WebsitePortfolio.js   section 2 — Website Portfolio (client sites)
+  WebsitePortfolio.js   section 2 — Latest Websites (client sites)
   VisualDesign.js       section 3 — Visual Design, and the dialog it opens
   OakNationalAcademy.js the Oak National Academy case study, shown as a modal
   GuidelinesCarousel.js the 55-page brand guidelines deck, flick-through
-  Projects.js           section 4 — Latest Projects
+  Projects.js           section 4 — Coming Soon
   Skills.js             section 5 — What We Love
   Footer.js             section 6 — contact + colophon
   GlassImage.js         artwork in a glass tile, degrading to the tile alone
@@ -217,7 +217,7 @@ There are two clips:
 - **Hero** — overscaled to 120% and pinned to the top rather than centred, because the
   focal point of the clip is the top of frame. There is deliberately no dark overlay:
   all contrast comes from the glass chrome.
-- **Website Portfolio + Projects + Skills** — one shared backdrop for all three
+- **Latest Websites + Coming Soon + Skills** — one shared backdrop for all three
   sections, pinned with `position: sticky` inside the band so a single viewport-tall
   clip covers several screens of content without being stretched across them. The footer sits below the band
   on solid canvas, which is why it is the one part of the system that carries no glass.
@@ -242,7 +242,7 @@ centred and the headline breaks across the design's 672px measure exactly as dra
 
 ## Project thumbnails
 
-The three cards in Latest Projects are backed by `assets/projects/`:
+The three cards in Coming Soon (`Projects.js`) are backed by `assets/projects/`:
 
 ```
 locker-room.jpg     // Lean Startup   — Locker Room
@@ -255,9 +255,10 @@ barely crops. Any aspect ratio works though — the tile is a fixed 194px-tall g
 surface. `ProjectImage` drops the `<img>` on error, so a missing or renamed file leaves
 the designed empty glass tile rather than a broken frame.
 
-## Website Portfolio
+## Latest Websites
 
-`WebsitePortfolio.js` renders the client sites above Latest Projects. The whole
+`WebsitePortfolio.js` renders the client sites above Coming Soon.
+The file keeps its name; the heading it renders is the one that changed. The whole
 section is one `SITES` array at the top of the file — add, remove or reorder a
 card by editing that array and nothing else.
 
@@ -275,7 +276,7 @@ card by editing that array and nothing else.
 `domain` is used three times — as the button label, as the `https://` href, and in
 the link's accessible name — so correcting a URL is a one-line change.
 
-The card is the Latest Projects card with a longer spine: the same 20px glass
+The card is the Coming Soon card with a longer spine: the same 20px glass
 surface, 194px image tile, 24px padding and hover lift, closing on two metadata
 chips and a CTA instead of a status line. Descriptions vary in length, so the CTA
 carries `mt-auto` and the buttons line up across a row.
@@ -305,7 +306,7 @@ the anchor itself, because `.liquid-glass-strong` sets `position: relative` and
 `overflow: hidden` — either one on the anchor would collapse the overlay back onto
 the button. Links open in a new tab, which is what the up-right arrow signals.
 
-### Website Portfolio thumbnails
+### Latest Websites thumbnails
 
 The nine cards are backed by `assets/website-portfolio/`, one file per card. A
 card behind **See more** is not in the DOM, so the first paint fetches three
@@ -329,7 +330,7 @@ decorative — correct, and never a wrong description, but a real one is better.
 
 ## Visual Design
 
-A third card section, between Website Portfolio and Latest Projects, holding the
+A third card section, between Latest Websites and Coming Soon, holding the
 brand-identity work. One card today — Oak National Academy — sitting in the first
 column of the same three-column grid, so a second piece drops in beside it without
 the section being rebuilt.
