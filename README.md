@@ -223,6 +223,27 @@ There are two clips:
   clip covers several screens of content without being stretched across them. The footer sits below the band
   on solid canvas, which is why it is the one part of the system that carries no glass.
 
+## Overscroll
+
+`html, body { overscroll-behavior-y: none; }` in `system.css`. Pulling past the
+top rubber-bands the whole document away from the viewport edge and paints the
+canvas into the gap — on a page that opens on a full-bleed video, the site reads
+as coming unstuck from the browser chrome rather than as a flourish.
+
+Only the y axis: `overscroll-behavior-x` would take the horizontal swipe-back
+gesture with it. Set on both elements because the spec propagates the root
+element's value to the viewport while browsers have also historically read it
+off `<body>`, the way they do `overflow`. Android's pull-to-refresh goes with
+it, which on a page with nothing to refresh is the better half of the bargain.
+
+It reaches the viewport only, so scroll containers inside the page are
+unaffected — the case-study dialog keeps its own `overscroll-contain`.
+
+Supported in Chrome, Edge, Firefox and Safari 16+. An older browser still
+bounces; the only way to stop it there is to move the page scroll into an inner
+container, which would cost the sticky video band, the scroll-spy and the smooth
+anchors. Not worth it for a browser generation that is already past.
+
 ## Motion
 
 - `BlurText` reveals headlines word by word — `blur(10px)/opacity 0/y 50` →

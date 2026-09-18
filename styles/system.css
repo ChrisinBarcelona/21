@@ -59,6 +59,30 @@ html { scroll-behavior: smooth; }
 body { margin: 0; -webkit-font-smoothing: antialiased; }
 
 /* ------------------------------------------------------------------
+   Overscroll. Pulling past the top rubber-bands the whole document away
+   from the viewport edge and paints the canvas into the gap. On a page
+   that opens on a full-bleed video it reads as the site coming unstuck
+   from the browser chrome rather than as a flourish, and the black band
+   that slides in is the first thing anyone notices.
+
+   Only the y axis. `overscroll-behavior-x` would take the horizontal
+   swipe-back gesture with it, and that is a navigation people rely on.
+
+   Set on both elements deliberately: the spec propagates the root
+   element's value to the viewport, while browsers have historically
+   also read it off <body>, the way they do `overflow`.
+
+   The trade is Android's pull-to-refresh, which goes with it. On a page
+   with nothing to refresh, losing the accidental reload is the better
+   half of that bargain.
+
+   Scroll containers inside the page are unaffected — this reaches the
+   viewport only. The case-study dialog carries its own
+   `overscroll-contain` and still does.
+   ------------------------------------------------------------------ */
+html, body { overscroll-behavior-y: none; }
+
+/* ------------------------------------------------------------------
    Focus. Tailwind's preflight leaves the UA outline in place, but a
    thin dark ring is invisible on this page. Keyboard users get an
    explicit white ring; it follows the element's own border-radius,
