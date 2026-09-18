@@ -35,9 +35,10 @@
      The key is public in the page source. That is how Web3Forms works:
      it identifies the destination, it is not a secret, and it can only
      ever deliver to the address it was issued for. It is also why the
-     question below matters.
+     question below matters. Replacing it is the whole of changing where
+     this form delivers.
      ------------------------------------------------------------------ */
-  const ACCESS_KEY = "";
+  const ACCESS_KEY = "a42577b9-4743-4276-89fd-e3a07e1272fc";
 
   const ENDPOINT = "https://api.web3forms.com/submit";
   const ADDRESS = "chris@chriskelly.it";
@@ -84,6 +85,7 @@
     const dialogRef = useRef(null);
     const closeRef = useRef(null);
     const quizRef = useRef(null);
+    const doneRef = useRef(null);
     const openerRef = useRef(null);
 
     /* idle | sending | sent | error */
@@ -193,6 +195,13 @@
     };
 
     const sending = status === "sending";
+    const sent = status === "sent";
+
+    /* Send unmounts the button that was pressed, so focus would fall to
+       the guard's default. It belongs on the one control now left. */
+    useEffect(() => {
+      if (sent && doneRef.current) doneRef.current.focus();
+    }, [sent]);
 
     return ReactDOM.createPortal(
       <motion.div
@@ -241,30 +250,36 @@
 
             <div className="flex flex-col gap-2 pr-12">
               <Kicker className="font-body text-sm leading-[1.1875rem] text-ink-tertiary">
-                Contact
+                {sent ? "Sent" : "Contact"}
               </Kicker>
               <h2
                 id="contact-dialog-title"
                 className="font-heading italic text-ink-primary text-3xl md:text-4xl leading-9 tracking-[-0.0625rem]"
               >
-                Let&rsquo;s talk
+                {sent ? "Success" : "Let’s talk"}
               </h2>
-              <p className="font-body font-light text-sm leading-[1.1875rem] text-ink-secondary">
-                To <span className="text-ink-primary">{ADDRESS}</span>
-              </p>
+              {/* The destination line belongs to the form. Once the mail
+                  has gone, where it went is no longer a thing to check. */}
+              {!sent && (
+                <p className="font-body font-light text-sm leading-[1.1875rem] text-ink-secondary">
+                  To <span className="text-ink-primary">{ADDRESS}</span>
+                </p>
+              )}
             </div>
 
-            {status === "sent" ? (
-              <div className="mt-8 flex flex-col gap-4">
-                <p className="font-body text-sm leading-[1.1875rem] text-ink-secondary">
-                  Thank you — your message is on its way. We&rsquo;ll be in touch shortly.
+            {sent ? (
+              <div className="mt-8 flex flex-col gap-5">
+                <p className="font-body font-light text-base leading-6 text-ink-secondary">
+                  We got the message. Thank you for getting in touch — we have it
+                  in front of us and we&rsquo;ll come back to you shortly.
                 </p>
                 <button
+                  ref={doneRef}
                   type="button"
                   onClick={onClose}
                   className="liquid-glass-strong glass-lift w-fit rounded-full px-6 py-3 font-body text-sm font-medium leading-5 text-ink-primary"
                 >
-                  Close
+                  Close now
                 </button>
               </div>
             ) : (

@@ -286,14 +286,11 @@ does nothing at all, silently. The form posts to
 [Web3Forms](https://web3forms.com), so a message arrives whatever the reader has
 installed, and the page can say plainly whether it went.
 
-### The one thing to configure
+### Where it delivers
 
-`ACCESS_KEY` at the top of `ContactModal.js`. Get one free from web3forms.com by
-entering `chris@chriskelly.it` — the key arrives by mail — and paste it between
-the quotes. Nothing else changes, and the form is live on the next deploy.
-
-**Until that key is set, every submission fails** and the reader is shown the
-address to mail instead.
+`ACCESS_KEY` at the top of `ContactModal.js`, issued by web3forms.com against
+`chris@chriskelly.it`. Replacing that one string is the whole of changing where
+this form delivers; nothing else in the file knows the destination.
 
 The key is public in the page source. That is how the service works: it names
 the destination, it is not a secret, and it can only ever deliver to the address
@@ -335,7 +332,11 @@ Escape listens on the document rather than the dialog, for the same reason: a
 handler waiting for the event to bubble out of the dialog never hears it once
 focus has left.
 
-A failed send keeps the form exactly as it was, so nothing typed is lost.
+A failed send keeps the form exactly as it was, so nothing typed is lost. A
+successful one replaces it: the kicker becomes *Sent*, the heading *Success*,
+and the destination line goes — where the mail went stops being a thing to check
+once it has gone. Focus moves to the *Close now* button, because the button that
+was pressed no longer exists.
 
 ## Latest Websites
 
