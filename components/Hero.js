@@ -21,12 +21,30 @@
   const FadingVideo = window.FadingVideo;
   const BlurText = window.BlurText;
   const ArrowUpRight = window.ArrowUpRight;
-  const ContactCTA = window.ContactCTA;
+  const Play = window.Play;
   const useReducedMotion = window.useReducedMotion;
   const reveal = window.reveal;
 
   const HERO_VIDEO =
     "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_080021_d598092b-c4c2-4e53-8e46-94cf9064cd50.mp4";
+
+  /* A plain mailto, carrying a subject and an opening line so the mail
+     opens already written. Line breaks are CRLF per RFC 6068 — Outlook
+     renders a lone %0A as one run-on line — and the encoder escapes
+     !'()*, which encodeURIComponent leaves alone; the apostrophe in
+     "I'd" is the one that matters. */
+  const ADDRESS = "chris@chriskelly.it";
+  const SUBJECT = "Project enquiry";
+  const BODY = ["Hi Chris,", "", "I'd like to discuss a project with you.", "", ""].join("\r\n");
+
+  const enc = (value) =>
+    encodeURIComponent(value).replace(
+      /[!'()*]/g,
+      (c) => "%" + c.charCodeAt(0).toString(16).toUpperCase()
+    );
+
+  const MAILTO =
+    "mailto:" + ADDRESS + "?subject=" + enc(SUBJECT) + "&body=" + enc(BODY);
 
   function Hero() {
     const reduced = useReducedMotion();
@@ -66,7 +84,13 @@
               View work
               <ArrowUpRight className="h-5 w-5 shrink-0" />
             </a>
-            <ContactCTA />
+            <a
+              href={MAILTO}
+              className="rounded-full flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium leading-5 text-ink-primary font-body"
+            >
+              Let&rsquo;s talk
+              <Play className="h-5 w-5 shrink-0" />
+            </a>
           </motion.div>
         </div>
       </section>
