@@ -24,6 +24,12 @@
    `position: relative` and `overflow: hidden`, and on the anchor either
    one alone would collapse the overlay back onto the button.
 
+   The site names are the one heading on the page set upright rather than
+   in the serif italic. They are proper nouns belonging to somebody else —
+   read as names, not as our display type — and nine of them in a row is
+   where the italic stops being a voice and starts being a texture. The
+   section heading above them keeps it.
+
    Card heights vary with the length of the description, so the CTA is
    pushed down by `mt-auto`: the buttons line up across a row.
 
@@ -60,33 +66,6 @@
      decorative: correct, and never a wrong description, but a real one
      is better — fill it in when the image lands. */
   const SITES = [
-    {
-      name: "Hack Her Health",
-      blurb: "A women's health hackathon bringing clinicians and technologists together.",
-      category: "Events",
-      functionality: "Registration Platform",
-      domain: "hackherhealth.eventornado.com",
-      image: "assets/website-portfolio/hack-her-health.webp",
-      alt: "A raised clenched fist, lit in deep purple against a purple ground"
-    },
-    {
-      name: "Blue Cloud",
-      blurb: "A European marine-data hackathon run for the Blue-Cloud research programme.",
-      category: "Events",
-      functionality: "Registration Platform",
-      domain: "hackathon2025.blue-cloud.org",
-      image: "assets/website-portfolio/blue-cloud.webp",
-      alt: "A whale drawn as a glowing low-poly wireframe of points and triangles on deep blue"
-    },
-    {
-      name: "EMOD Open Sea Lab",
-      blurb: "An ocean-data innovation camp built on Europe's marine observation network.",
-      category: "Events",
-      functionality: "Registration Platform",
-      domain: "opensealab.eu",
-      image: "assets/website-portfolio/emod-open-sea-lab.webp",
-      alt: "A line of offshore wind turbines standing in calm sea under a clear blue sky"
-    },
     {
       name: "Skin IQ Aesthetics",
       blurb: "An advanced aesthetics clinic offering skin treatments and medical-grade skincare.",
@@ -140,6 +119,33 @@
       domain: "arisweare.com",
       image: "assets/website-portfolio/aris.webp",
       alt: "A woman in a black vest and shorts walking in profile past a weathered concrete wall"
+    },
+    {
+      name: "Hack Her Health",
+      blurb: "A women's health hackathon bringing clinicians and technologists together.",
+      category: "Events",
+      functionality: "Registration Platform",
+      domain: "hackherhealth.eventornado.com",
+      image: "assets/website-portfolio/hack-her-health.webp",
+      alt: "A raised clenched fist, lit in deep purple against a purple ground"
+    },
+    {
+      name: "Blue Cloud",
+      blurb: "A European marine-data hackathon run for the Blue-Cloud research programme.",
+      category: "Events",
+      functionality: "Registration Platform",
+      domain: "hackathon2025.blue-cloud.org",
+      image: "assets/website-portfolio/blue-cloud.webp",
+      alt: "A whale drawn as a glowing low-poly wireframe of points and triangles on deep blue"
+    },
+    {
+      name: "EMOD Open Sea Lab",
+      blurb: "An ocean-data innovation camp built on Europe's marine observation network.",
+      category: "Events",
+      functionality: "Registration Platform",
+      domain: "opensealab.eu",
+      image: "assets/website-portfolio/emod-open-sea-lab.webp",
+      alt: "A line of offshore wind turbines standing in calm sea under a clear blue sky"
     }
   ];
 
@@ -239,7 +245,7 @@
 
                 <h3
                   tabIndex={-1}
-                  className="font-heading italic text-ink-primary text-3xl md:text-4xl leading-9 tracking-[-0.0625rem] focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
+                  className="font-heading text-ink-primary text-3xl md:text-4xl leading-9 tracking-[-0.0625rem] focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
                 >
                   {site.name}
                 </h3>

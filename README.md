@@ -401,6 +401,16 @@ surface, 194px image tile, 24px padding and hover lift, closing on two metadata
 chips and a CTA instead of a status line. Descriptions vary in length, so the CTA
 carries `mt-auto` and the buttons line up across a row.
 
+One deliberate departure: **the site names are set upright**, the only headings on
+the page that are not in the serif italic. They are proper nouns belonging to
+somebody else, so they read as names rather than as our display type, and nine of
+them in a row is where the italic stops being a voice and becomes a texture. The
+*Latest Websites* heading above them keeps it.
+
+`SITES` is also the running order, and it leads with the commercial work — Skin IQ
+Aesthetics, Rosspark Hotel, Falafel Fresh, then Mad About Fabrics, Bingham's Bees,
+Aris — with the three event registration platforms last.
+
 **Three at a time.** Nine cards at once is a wall, so the section opens on the
 first three and grows a row per press of **See more** — 3, then 6, then 9, at
 which point the button retires. `STEP` at the top of the file is the batch size
@@ -466,10 +476,13 @@ card behind **See more** is not in the DOM, so the first paint fetches three
 thumbnails and each press fetches the next three:
 
 ```
-hack-her-health.webp     blue-cloud.webp          emod-open-sea-lab.webp
 skin-iq-aesthetics.webp  rosspark-hotel.webp      falafel-fresh.webp
 mad-about-fabrics.webp   binghams-bees.webp       aris.webp
+hack-her-health.webp     blue-cloud.webp          emod-open-sea-lab.webp
 ```
+
+A row of the table is a press of **See more**, so the order of `SITES` is the
+order they are revealed in: the commercial work first, the event platforms last.
 
 The tile is the same fixed 194px-tall glass surface as the project cards, so any
 aspect ratio works and `GlassImage` drops the `<img>` on error — a missing file
