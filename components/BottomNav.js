@@ -5,7 +5,14 @@
    Active state is three reinforcing signals, never colour alone: the 10%
    selected surface, a full-white icon, and the label stepping up from
    Label/XS (11/regular) to Label/SM (12/medium). The selected surface is a
-   shared `layoutId`, so it slides between items as you scroll. */
+   shared `layoutId`, so it slides between items as you scroll.
+
+   Everything that scales with the pill — its padding, the gaps, the icon
+   box, the label type, the glass hairline and the track width — is declared
+   in `system.css` under `.bottom-nav`, driven off one `--nav-scale`. The
+   pill is drawn at the design's size on a phone and at 85% of it from `md`
+   up, which is the whole of "smaller on desktop". The classes left here are
+   the ones that do not scale: layout, radius, colour and motion. */
 (function () {
   const { useEffect, useState } = React;
   const motion = window.Motion.motion;
@@ -16,10 +23,10 @@
      study passes its chapters — so there is one nav implementation. */
   const HOME_ITEMS = [
     { id: "hero", label: "Home", Icon: window.Home },
-    { id: "websites", label: "Websites", Icon: window.Layers },
+    { id: "websites", label: "Websites", Icon: window.Globe },
     { id: "visual-design", label: "Visual Design", Icon: window.Palette },
-    { id: "projects", label: "Projects", Icon: window.Navigation },
-    { id: "skills", label: "Skills", Icon: window.Star },
+    { id: "case-studies", label: "Case Studies", Icon: window.Flask },
+    { id: "skills", label: "Skills", Icon: window.Dribbble },
     { id: "contact", label: "Contact", Icon: window.ArrowUpRight }
   ];
 
@@ -34,7 +41,9 @@
 
     /* Four destinations get the design's exact 97.5px each. Past four the
        labels are longer than the pattern was drawn for (a chapter is a
-       "Retrospective", a section is a "Home"), so each gets more room. */
+       "Retrospective", a section is a "Case Studies"), so each gets more
+       room. Handed to CSS rather than set as a width, because the track is
+       the last thing that has to come down with `--nav-scale`. */
     const compact = items.length > 4;
     const maxWidth = items.length * (compact ? 7.5 : 6.09375) + "rem";
 
@@ -59,13 +68,13 @@
 
     return (
       <nav
-        className="fixed bottom-8 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none"
+        className="bottom-nav fixed bottom-8 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none"
         aria-label={label}
+        style={{ "--nav-track": maxWidth }}
       >
         <motion.ul
           {...reveal(reduced, 1.2)}
-          style={{ maxWidth }}
-          className="liquid-glass-strong rounded-full flex items-center gap-0.5 p-2 w-full pointer-events-auto list-none m-0"
+          className="bottom-nav-pill liquid-glass-strong rounded-full flex items-center w-full pointer-events-auto list-none m-0"
         >
           {items.map(({ id, label, Icon }) => {
             const isActive = active === id;
@@ -75,7 +84,7 @@
                   href={"#" + id}
                   aria-label={label}
                   aria-current={isActive ? "true" : undefined}
-                  className="relative flex flex-col items-center justify-center gap-1.5 rounded-full px-2 sm:px-4 py-2"
+                  className="bottom-nav-item relative flex flex-col items-center justify-center rounded-full"
                 >
                   {isActive && (
                     <motion.span
@@ -91,18 +100,18 @@
                   )}
                   <Icon
                     className={
-                      "relative h-6 w-6 shrink-0 transition-colors duration-300 " +
+                      "bottom-nav-icon relative shrink-0 transition-colors duration-300 " +
                       (isActive ? "text-ink-primary" : "text-ink-secondary")
                     }
                   />
                   <span
                     aria-hidden="true"
                     className={
-                      "relative font-body whitespace-nowrap transition-colors duration-300 " +
+                      "bottom-nav-label relative font-body whitespace-nowrap transition-colors duration-300 " +
                       (compact ? "hidden sm:block " : "") +
                       (isActive
-                        ? "text-[0.75rem] leading-4 font-medium text-ink-primary"
-                        : "text-[0.6875rem] leading-[0.875rem] font-normal text-ink-tertiary")
+                        ? "bottom-nav-label-active font-medium text-ink-primary"
+                        : "font-normal text-ink-tertiary")
                     }
                   >
                     {label}

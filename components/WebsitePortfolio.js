@@ -1,8 +1,8 @@
 /* WebsitePortfolio — "Latest Websites". The client work, above the
-   Coming Soon band, sharing the same video band and so carrying its own
+   Case Studies band, sharing the same video band and so carrying its own
    glass.
 
-   The card is the Projects card with a longer spine: same 20px glass
+   The card is the Case Studies card with a longer spine: same 20px glass
    surface, same 194px image tile, same 24px padding and gap, same
    hover lift. Where a project card closes on a status line, a portfolio
    card closes on two metadata chips and a CTA out to the live site.
@@ -11,6 +11,13 @@
    <a> — which would swallow the button into a nested interactive — the
    CTA carries `stretched-link`, whose ::after covers the card. One link
    in the accessibility tree, the entire surface clickable.
+
+   That link does not leave straight away. A press opens
+   `LeaveSiteModal`, which names the destination and offers staying, and
+   the live site opens from there. The anchor keeps its real `href` and
+   `target`, so the status bar still shows where it goes and a
+   cmd/ctrl/middle click still opens it directly — the dialog is for the
+   plain press, which is the one nobody meant as a departure.
 
    Which is why the pill's glass is on a span inside the anchor rather
    than on the anchor itself: `.liquid-glass-strong` sets
@@ -34,7 +41,9 @@
 (function () {
   const { useEffect, useRef, useState } = React;
   const motion = window.Motion.motion;
+  const AnimatePresence = window.Motion.AnimatePresence;
   const GlassImage = window.GlassImage;
+  const LeaveSiteModal = window.LeaveSiteModal;
   const BlurText = window.BlurText;
   const Kicker = window.Kicker;
   const ArrowUpRight = window.ArrowUpRight;
@@ -150,6 +159,8 @@
   function WebsitePortfolio() {
     const reduced = useReducedMotion();
     const [shown, setShown] = useState(STEP);
+    /* The site whose live-link dialog is open, or null. */
+    const [leaving, setLeaving] = useState(null);
     const gridRef = useRef(null);
     /* Set by the button, read by the effect below: a reveal moves focus,
        the first paint does not. */
@@ -171,104 +182,124 @@
       setShown((n) => Math.min(n + STEP, SITES.length));
     };
 
+    /* A modified click — cmd, ctrl, shift, alt, or anything but the
+       primary button — is already a deliberate "open this elsewhere",
+       so the browser keeps it. Only the plain press is intercepted. */
+    const confirmLeaving = (site) => (event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      if (typeof event.button === "number" && event.button !== 0) return;
+      event.preventDefault();
+      setLeaving(site);
+    };
+
     return (
-      <section
-        id="websites"
-        aria-labelledby="websites-heading"
-        className="relative scroll-mt-20 mx-auto max-w-[90rem] px-6 md:px-10 lg:px-16 py-14"
-      >
-        <div className="on-video flex flex-col gap-4">
-          <motion.div {...revealOnScroll(reduced)}>
-            <Kicker className="font-body text-sm leading-[1.1875rem] text-ink-tertiary">
-              Websites
-            </Kicker>
-          </motion.div>
-
-          <BlurText
-            as="h2"
-            id="websites-heading"
-            align="left"
-            text="Latest Websites"
-            delay={100}
-            className="font-heading italic text-ink-primary text-4xl md:text-5xl lg:text-[3.75rem] leading-[0.9] tracking-[-0.125rem] lg:tracking-[-0.1875rem]"
-          />
-        </div>
-
-        <div
-          ref={gridRef}
-          className="mt-[3.375rem] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      <React.Fragment>
+        <section
+          id="websites"
+          aria-labelledby="websites-heading"
+          className="relative scroll-mt-20 mx-auto max-w-[90rem] px-6 md:px-10 lg:px-16 py-14"
         >
-          {visible.map((site, i) => (
-            <motion.article
-              key={site.name}
-              {...revealOnScroll(reduced, 0.15 + (i % 3) * 0.15)}
-              className="liquid-glass glass-lift flex h-full flex-col gap-4 p-6"
-              style={{ borderRadius: "var(--radius-lg)" }}
-            >
-              <GlassImage
-                src={site.image}
-                alt={site.alt}
-                className="h-[12.125rem]"
-              />
-
+          <div className="on-video flex flex-col gap-4">
+            <motion.div {...revealOnScroll(reduced)}>
               <Kicker className="font-body text-sm leading-[1.1875rem] text-ink-tertiary">
-                Website
+                Websites
               </Kicker>
+            </motion.div>
 
-              <h3
-                tabIndex={-1}
-                className="font-heading italic text-ink-primary text-3xl md:text-4xl leading-9 tracking-[-0.0625rem] focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
-              >
-                {site.name}
-              </h3>
+            <BlurText
+              as="h2"
+              id="websites-heading"
+              align="left"
+              text="Latest Websites"
+              delay={100}
+              className="font-heading italic text-ink-primary text-4xl md:text-5xl lg:text-[3.75rem] leading-[0.9] tracking-[-0.125rem] lg:tracking-[-0.1875rem]"
+            />
+          </div>
 
-              <p className="font-body font-light text-sm leading-[1.1875rem] text-ink-secondary">
-                {site.blurb}
-              </p>
-
-              <div className="flex flex-wrap gap-2">
-                <Chip>{site.category}</Chip>
-                <Chip>{site.functionality}</Chip>
-              </div>
-
-              <div className="mt-auto pt-2">
-                <a
-                  href={"https://" + site.domain}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={"Visit the " + site.name + " website at " + site.domain + " (opens in a new tab)"}
-                  className="stretched-link rounded-full block w-fit max-w-full"
-                >
-                  <span className="liquid-glass-strong rounded-full flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium leading-5 text-ink-primary font-body">
-                    <span className="break-all">{site.domain}</span>
-                    <ArrowUpRight className="h-5 w-5 shrink-0" />
-                  </span>
-                </a>
-              </div>
-            </motion.article>
-          ))}
-        </div>
-
-        <div className="mt-10 flex flex-col items-center gap-3">
-          <p
-            aria-live="polite"
-            className="font-body text-sm leading-[1.1875rem] text-ink-tertiary"
+          <div
+            ref={gridRef}
+            className="mt-[3.375rem] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            {"Showing " + shown + " of " + SITES.length + " websites"}
-          </p>
+            {visible.map((site, i) => (
+              <motion.article
+                key={site.name}
+                {...revealOnScroll(reduced, 0.15 + (i % 3) * 0.15)}
+                className="liquid-glass glass-lift flex h-full flex-col gap-4 p-6"
+                style={{ borderRadius: "var(--radius-lg)" }}
+              >
+                <GlassImage
+                  src={site.image}
+                  alt={site.alt}
+                  className="h-[12.125rem]"
+                />
 
-          {remaining > 0 && (
-            <button
-              type="button"
-              onClick={showMore}
-              className="liquid-glass-strong glass-lift flex items-center justify-center gap-2 rounded-full px-6 py-3 font-body text-sm font-medium leading-5 text-ink-primary"
+                <Kicker className="font-body text-sm leading-[1.1875rem] text-ink-tertiary">
+                  Website
+                </Kicker>
+
+                <h3
+                  tabIndex={-1}
+                  className="font-heading italic text-ink-primary text-3xl md:text-4xl leading-9 tracking-[-0.0625rem] focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
+                >
+                  {site.name}
+                </h3>
+
+                <p className="font-body font-light text-sm leading-[1.1875rem] text-ink-secondary">
+                  {site.blurb}
+                </p>
+
+                <div className="flex flex-wrap gap-2">
+                  <Chip>{site.category}</Chip>
+                  <Chip>{site.functionality}</Chip>
+                </div>
+
+                <div className="mt-auto pt-2">
+                  <a
+                    href={"https://" + site.domain}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={confirmLeaving(site)}
+                    aria-haspopup="dialog"
+                    aria-label={"Visit the " + site.name + " website at " + site.domain}
+                    className="stretched-link rounded-full block w-fit max-w-full"
+                  >
+                    <span className="liquid-glass-strong rounded-full flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium leading-5 text-ink-primary font-body">
+                      <span className="break-all">{site.domain}</span>
+                      <ArrowUpRight className="h-5 w-5 shrink-0" />
+                    </span>
+                  </a>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+
+          <div className="mt-10 flex flex-col items-center gap-3">
+            <p
+              aria-live="polite"
+              className="font-body text-sm leading-[1.1875rem] text-ink-tertiary"
             >
-              See more
-              <ArrowDown className="h-5 w-5 shrink-0" />
-            </button>
+              {"Showing " + shown + " of " + SITES.length + " websites"}
+            </p>
+
+            {remaining > 0 && (
+              <button
+                type="button"
+                onClick={showMore}
+                className="liquid-glass-strong glass-lift flex items-center justify-center gap-2 rounded-full px-6 py-3 font-body text-sm font-medium leading-5 text-ink-primary"
+              >
+                See more
+                <ArrowDown className="h-5 w-5 shrink-0" />
+              </button>
+            )}
+          </div>
+        </section>
+
+        <AnimatePresence>
+          {leaving && (
+            <LeaveSiteModal site={leaving} onClose={() => setLeaving(null)} />
           )}
-        </div>
-      </section>
+        </AnimatePresence>
+      </React.Fragment>
     );
   }
 

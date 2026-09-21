@@ -18,7 +18,7 @@
     { id: "hero", label: "Back to Top" },
     { id: "websites", label: "Websites" },
     { id: "visual-design", label: "Visual Design" },
-    { id: "projects", label: "Projects" },
+    { id: "case-studies", label: "Case Studies" },
     { id: "skills", label: "Skills" },
     { id: "contact", label: "Contact" }
   ];

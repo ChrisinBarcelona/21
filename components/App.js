@@ -1,8 +1,8 @@
 /* App — composition. Hero owns the first video; Website Portfolio, Visual
-   Design, Projects and Skills share the second, which is pinned behind the whole band so the
-   cards' glass has something moving to blur. It sticks rather than stretches,
-   so a band four sections long still plays one un-distorted clip. The footer
-   sits below the band on solid canvas.
+   Design, Case Studies and Skills share the second, which is pinned behind
+   the whole band so the cards' glass has something moving to blur. It sticks
+   rather than stretches, so a band four sections long still plays one
+   un-distorted clip. The footer sits below the band on solid canvas.
 
    The landmarks are siblings, not nested: the wordmark header, the section
    nav and the footer each stand outside <main> so that skipping to the
@@ -14,7 +14,7 @@
   const Hero = window.Hero;
   const WebsitePortfolio = window.WebsitePortfolio;
   const VisualDesign = window.VisualDesign;
-  const Projects = window.Projects;
+  const CaseStudies = window.CaseStudies;
   const Skills = window.Skills;
   const Footer = window.Footer;
 
@@ -43,7 +43,7 @@
             <div className="relative z-10">
               <WebsitePortfolio />
               <VisualDesign />
-              <Projects />
+              <CaseStudies />
               <Skills />
             </div>
           </div>

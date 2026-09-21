@@ -50,7 +50,7 @@ assets/
   oak/guidelines/       the brand guidelines deck, one WebP per PDF page
   ona-guidelines.pdf    the source brand guidelines, linked for download
 components/
-  Icons.js              lucide glyphs: ArrowUpRight, Play, Home, Navigation, Star
+  Icons.js              lucide glyphs: ArrowUpRight, Play, Home, Globe, Flask, Dribbble
   Motion.js             the reduced-motion hook and the shared reveal helpers
   Kicker.js             the "// Label" eyebrow
   FadingVideo.js        rAF-driven crossfade looping video (no CSS transitions)
@@ -59,11 +59,12 @@ components/
   BottomNav.js          floating glass pill with scroll-spy
   Hero.js               section 1 — starfield video
   ContactModal.js       the "Let's talk" dialog — contact form, posts to Web3Forms
+  LeaveSiteModal.js     the "about to leave" dialog, between a card and a live site
   WebsitePortfolio.js   section 2 — Latest Websites (client sites)
   VisualDesign.js       section 3 — Visual Design, and the dialog it opens
   OakNationalAcademy.js the Oak National Academy case study, shown as a modal
   GuidelinesCarousel.js the 55-page brand guidelines deck, flick-through
-  Projects.js           section 4 — Coming Soon
+  CaseStudies.js        section 4 — Case Studies / Coming Soon
   Skills.js             section 5 — What We Love
   Footer.js             section 6 — contact + colophon
   GlassImage.js         artwork in a glass tile, degrading to the tile alone
@@ -194,6 +195,21 @@ Two things do not follow the root font size, and so are handled explicitly:
   `7.64em`. Tied to its own font size, it holds the design's type-to-measure ratio
   through every breakpoint step, so the line always breaks where Figma breaks it.
 
+One thing is deliberately drawn *below* the page scale: **the bottom nav is 85% of
+its design size from `md` (864px) up**. On a phone the pill is a touch target and
+keeps the full size; on a desktop it is a pointer target sitting over the video, and
+15% smaller is enough to stop it dominating the fold. It is one number —
+`--nav-scale` in the `.bottom-nav` block of `system.css` — multiplying every length
+the pill is built out of: padding, gaps, the icon box, the label type, the glass
+hairline and the width of the track. The 50px backdrop blur and the pill's 2rem
+offset from the bottom of the viewport are not scaled; the blur is what keeps the
+labels readable over a bright frame.
+
+Those metrics live in CSS rather than in Tailwind utilities *because* they all have
+to come down together, and each selector names `.bottom-nav` as well as its own
+class — two classes against a utility's one, so they hold wherever the Play CDN
+injects its stylesheet.
+
 The first type step is gentler than a strict 1.125x. A phone viewport cannot take the
 full multiple without pushing the hero CTAs under the floating nav; the desktop
 steps carry the full scale.
@@ -272,7 +288,9 @@ anchors. Not worth it for a browser generation that is already past.
   as an `IntersectionObserver` scroll-spy tracks which section holds the middle of the
   viewport. Active state is three reinforcing signals — the 10% selected glass, a
   full-white icon, and the label stepping up from 11px regular to 12px medium — so it
-  never depends on colour alone.
+  never depends on colour alone. The six destinations are Home, Websites, Visual
+  Design, Case Studies, Skills and Contact; the same component renders the case
+  study's five chapters from `PROJECT.chapters`.
 
 A note on `BlurText`: a flex container swallows the whitespace between the word spans, so
 the gap has to be drawn explicitly. It uses `columnGap` rather than a per-word
@@ -280,9 +298,10 @@ the gap has to be drawn explicitly. It uses `columnGap` rather than a per-word
 centred and the headline breaks across the design's 672px measure exactly as drawn
 ("We Make Websites that / Are Impossible to Ignore").
 
-## Project thumbnails
+## Case study thumbnails
 
-The three cards in Coming Soon (`Projects.js`) are backed by `assets/projects/`:
+The three cards in Case Studies (`CaseStudies.js`, section `#case-studies`, still
+headed *Coming Soon*) are backed by `assets/projects/`:
 
 ```
 locker-room.jpg     // Lean Startup   — Locker Room
@@ -358,7 +377,7 @@ was pressed no longer exists.
 
 ## Latest Websites
 
-`WebsitePortfolio.js` renders the client sites above Coming Soon.
+`WebsitePortfolio.js` renders the client sites above Case Studies.
 The file keeps its name; the heading it renders is the one that changed. The whole
 section is one `SITES` array at the top of the file — add, remove or reorder a
 card by editing that array and nothing else.
@@ -377,7 +396,7 @@ card by editing that array and nothing else.
 `domain` is used three times — as the button label, as the `https://` href, and in
 the link's accessible name — so correcting a URL is a one-line change.
 
-The card is the Coming Soon card with a longer spine: the same 20px glass
+The card is the Case Studies card with a longer spine: the same 20px glass
 surface, 194px image tile, 24px padding and hover lift, closing on two metadata
 chips and a CTA instead of a status line. Descriptions vary in length, so the CTA
 carries `mt-auto` and the buttons line up across a row.
@@ -406,6 +425,39 @@ the hit area. The pill's glass sits on a `<span>` *inside* the anchor rather tha
 the anchor itself, because `.liquid-glass-strong` sets `position: relative` and
 `overflow: hidden` — either one on the anchor would collapse the overlay back onto
 the button. Links open in a new tab, which is what the up-right arrow signals.
+
+### The link asks first
+
+A press does not leave straight away. It opens `LeaveSiteModal.js`, which names
+where the link goes and offers staying as the first and focused choice:
+
+> // Leaving chriskelly.it
+>
+> *You are about to leave and go to the live site for "Rosspark Hotel"*
+>
+> rosspark.com opens in a new tab, so this page stays where it is.
+>
+> `Stay here`  `See Rosspark Hotel website`
+
+Nine cards on the section and any press on one of them was a departure, on a page
+the reader came to read. Nothing in the dialog is a warning — the site is the work,
+and going to see it is the point — it is a beat in which to change your mind, and
+the name of the destination before you arrive at it.
+
+Its role is `alertdialog` rather than `dialog`, which is the pattern for a question
+with two answers, and *Stay here* takes focus on open so Enter and Escape agree. The
+mechanics are `ContactModal`'s — body locked, focus returned to the card on close,
+Tab trapped, Escape closes, portalled to `<body>` past the floating nav — with the
+backdrop going the other way: a press beside a question about leaving closes it,
+because there is nothing in here to lose.
+
+The anchor keeps its real `href` and `target`, so the status bar still shows the
+destination and a cmd/ctrl/middle click still opens the site directly. Only the plain
+left press is intercepted, which is the one nobody meant as a departure.
+
+Following the link closes the dialog on the *next* task rather than in the click
+handler. The anchor is the element the browser is acting on while the click is being
+dispatched, and unmounting it there can take the navigation with it.
 
 ### Latest Websites thumbnails
 

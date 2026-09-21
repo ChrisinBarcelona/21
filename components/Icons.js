@@ -48,14 +48,6 @@
     );
   }
 
-  function Navigation(props) {
-    return (
-      <Icon {...props}>
-        <polygon points="3 11 22 2 13 21 11 13 3 11" />
-      </Icon>
-    );
-  }
-
   function Star(props) {
     return (
       <Icon {...props}>
@@ -155,6 +147,39 @@
     );
   }
 
+  function Globe(props) {
+    return (
+      <Icon {...props}>
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+        <path d="M2 12h20" />
+      </Icon>
+    );
+  }
+
+  /* lucide's flask-conical. The line across the base is the liquid: it is
+     what reads as an experiment rather than as a funnel. */
+  function Flask(props) {
+    return (
+      <Icon {...props}>
+        <path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2" />
+        <path d="M8.5 2h7" />
+        <path d="M7 16h10" />
+      </Icon>
+    );
+  }
+
+  function Dribbble(props) {
+    return (
+      <Icon {...props}>
+        <circle cx="12" cy="12" r="10" />
+        <path d="M19.13 5.09C15.22 9.14 10 10.44 2.25 10.94" />
+        <path d="M21.75 12.84c-6.62-1.41-12.14 1-16.38 6.32" />
+        <path d="M8.56 2.75c4.37 6 6 9.42 8 17.72" />
+      </Icon>
+    );
+  }
+
   function Palette(props) {
     return (
       <Icon {...props}>
@@ -170,7 +195,6 @@
   window.ArrowUpRight = ArrowUpRight;
   window.Play = Play;
   window.Home = Home;
-  window.Navigation = Navigation;
   window.Star = Star;
   window.Search = Search;
   window.Target = Target;
@@ -183,4 +207,7 @@
   window.CaretRight = CaretRight;
   window.X = X;
   window.Palette = Palette;
+  window.Globe = Globe;
+  window.Flask = Flask;
+  window.Dribbble = Dribbble;
 })();

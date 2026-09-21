@@ -1,5 +1,9 @@
-/* Projects — "Coming Soon". Sits transparent over the shared video band,
-   so every surface here carries its own glass. */
+/* CaseStudies — "Coming Soon". Sits transparent over the shared video band,
+   so every surface here carries its own glass.
+
+   The section is `#case-studies`; the bottom nav and the footer link to
+   it by that id. `PROJECTS` below is still the list of projects the
+   studies will be written about. */
 (function () {
   const motion = window.Motion.motion;
   const GlassImage = window.GlassImage;
@@ -35,25 +39,25 @@
     }
   ];
 
-  function Projects() {
+  function CaseStudies() {
     const reduced = useReducedMotion();
 
     return (
       <section
-        id="projects"
-        aria-labelledby="projects-heading"
+        id="case-studies"
+        aria-labelledby="case-studies-heading"
         className="relative scroll-mt-20 mx-auto max-w-[90rem] px-6 md:px-10 lg:px-16 py-14"
       >
         <div className="on-video flex flex-col gap-4">
           <motion.div {...revealOnScroll(reduced)}>
             <Kicker className="font-body text-sm leading-[1.1875rem] text-ink-tertiary">
-              Projects
+              Case Studies
             </Kicker>
           </motion.div>
 
           <BlurText
             as="h2"
-            id="projects-heading"
+            id="case-studies-heading"
             align="left"
             text="Coming Soon"
             delay={100}
@@ -93,5 +97,5 @@
     );
   }
 
-  window.Projects = Projects;
+  window.CaseStudies = CaseStudies;
 })();

@@ -225,6 +225,70 @@ main:focus, main:focus-visible { outline: none; }
 }
 
 /* ------------------------------------------------------------------
+   Bottom nav.
+
+   The pill's own metrics live here rather than in Tailwind utilities so
+   that they can all come down together: `--nav-scale` multiplies every
+   length the pill is built out of. It is 1 on a phone and 0.85 from
+   `md` (864px) up — the design's size where the pill is also a touch
+   target, and 15% smaller once there is a pointer and a desk.
+
+   `--nav-track` is the width budget, handed in from the component,
+   because only the component knows how many destinations there are.
+
+   Deliberately not scaled: the 50px backdrop blur, which is what keeps
+   the labels readable over a bright frame, and the pill's 2rem offset
+   from the bottom of the viewport.
+
+   Every selector below names `.bottom-nav` as well as its own class.
+   That is two classes against a Tailwind utility's one, so these hold
+   wherever the Play CDN happens to inject its stylesheet.
+   ------------------------------------------------------------------ */
+.bottom-nav {
+  --nav-scale: 1;
+  --nav-item-gutter: 0.5rem;              /* 8px  */
+}
+
+@media (min-width: 720px) {               /* sm */
+  .bottom-nav { --nav-item-gutter: 1rem; } /* 16px */
+}
+
+@media (min-width: 864px) {               /* md — pointer territory */
+  .bottom-nav { --nav-scale: 0.85; }
+}
+
+.bottom-nav .bottom-nav-pill {
+  max-width: calc(var(--nav-track) * var(--nav-scale));
+  padding: calc(0.5rem * var(--nav-scale));
+  gap: calc(0.125rem * var(--nav-scale));
+  /* the glass hairline is part of the pill, so it comes down with it */
+  --stroke-glass: calc(0.0875rem * var(--nav-scale));
+}
+
+.bottom-nav .bottom-nav-item {
+  gap: calc(0.375rem * var(--nav-scale));
+  padding:
+    calc(0.5rem * var(--nav-scale))
+    calc(var(--nav-item-gutter) * var(--nav-scale));
+}
+
+.bottom-nav .bottom-nav-icon {
+  width: calc(1.5rem * var(--nav-scale));
+  height: calc(1.5rem * var(--nav-scale));
+}
+
+/* Label/XS — 11/regular, stepping up to Label/SM 12/medium when active */
+.bottom-nav .bottom-nav-label {
+  font-size: calc(0.6875rem * var(--nav-scale));
+  line-height: calc(0.875rem * var(--nav-scale));
+}
+
+.bottom-nav .bottom-nav-label-active {
+  font-size: calc(0.75rem * var(--nav-scale));
+  line-height: calc(1rem * var(--nav-scale));
+}
+
+/* ------------------------------------------------------------------
    Reduced motion. The entrance animations are driven by Framer Motion
    from JS, so the components read the same preference and drop the
    travel and blur themselves; this covers the CSS-driven parts.
