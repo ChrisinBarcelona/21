@@ -1,5 +1,5 @@
-/* Skills — "What We Love". Six feature cards on the already-raised 5% glass,
-   two rows of three. */
+/* Skills — "What We Love". Eight feature cards on the already-raised 5%
+   glass, three rows of three with the last row two wide. */
 (function () {
   const motion = window.Motion.motion;
   const BlurText = window.BlurText;
@@ -31,6 +31,14 @@
     {
       title: "Service Design",
       body: "We map end-to-end customer journeys to build seamless, impactful service experiences."
+    },
+    {
+      title: "Web Deployment",
+      body: "We handle hosting, SSL, metadata and SEO fundamentals so a finished site launches production-ready."
+    },
+    {
+      title: "Teaching Design",
+      body: "Over 6 years teaching User Experience Design, mentoring the next generation of UX/UI designers."
     }
   ];
 

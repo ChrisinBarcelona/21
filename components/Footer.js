@@ -19,6 +19,7 @@
     { id: "websites", label: "Websites" },
     { id: "visual-design", label: "Visual Design" },
     { id: "case-studies", label: "Case Studies" },
+    { id: "learn-to-design", label: "Teaching" },
     { id: "skills", label: "Skills" },
     { id: "contact", label: "Contact" }
   ];

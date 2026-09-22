@@ -26,6 +26,7 @@
     { id: "websites", label: "Websites", Icon: window.Globe },
     { id: "visual-design", label: "Visual Design", Icon: window.Palette },
     { id: "case-studies", label: "Case Studies", Icon: window.Flask },
+    { id: "learn-to-design", label: "Teaching", Icon: window.GraduationCap },
     { id: "skills", label: "Skills", Icon: window.Dribbble },
     { id: "contact", label: "Contact", Icon: window.ArrowUpRight }
   ];

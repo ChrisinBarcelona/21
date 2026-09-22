@@ -195,6 +195,46 @@ main:focus, main:focus-visible { outline: none; }
   z-index: 2;
 }
 
+/* ------------------------------------------------------------------
+   Frosted glass. A milkier variant of `.liquid-glass-strong` for the one
+   surface on the page that has to read as an announcement rather than a
+   card among cards — the Learn to Design ribbon. Same 50px blur, but the
+   tint behind it is raised from a 1% film to 8%, so the surface holds its
+   own shape over a bright frame of video instead of dissolving into it.
+   ------------------------------------------------------------------ */
+.liquid-glass-frost {
+  background: rgba(255, 255, 255, 0.08);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(var(--blur-glass-strong));
+  -webkit-backdrop-filter: blur(var(--blur-glass-strong));
+  border: none;
+  box-shadow: 0.25rem 0.25rem 0.25rem var(--color-effect-shadow-ambient),
+              inset 0 var(--hairline) var(--hairline) var(--color-effect-inner-highlight-strong);
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-glass-frost::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--stroke-glass);
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.25) 20%,
+    rgba(255, 255, 255, 0.05) 40%,
+    rgba(255, 255, 255, 0.05) 60%,
+    rgba(255, 255, 255, 0.25) 80%,
+    rgba(255, 255, 255, 0.55) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 2;
+}
+
 /* Card surfaces. Figma: "Hover lifts the surface from 1% to 5%".
    Skills cards are drawn on the already-raised 5% surface, so they
    lift one further step. */
