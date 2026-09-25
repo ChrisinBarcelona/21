@@ -1,6 +1,7 @@
 /* Icon set — lucide stroke icons at the sizes the design calls for.
-   Each component file is wrapped in an IIFE so top-level bindings don't
-   collide in the shared global scope Babel-standalone scripts run in. */
+   Each component file is wrapped in an IIFE and publishes onto `window`,
+   the convention every component follows (see "One shared global scope"
+   in the README). */
 (function () {
   /* Every icon is a 24x24 lucide glyph, strokeWidth 2, round caps. The
      rendered box is set by the caller via `className`, matching the

@@ -1,6 +1,12 @@
-/* Tailwind Play CDN configuration. Loaded after the CDN script on every
-   page, so the theme extension is identical across them. */
-tailwind.config = {
+/* Tailwind configuration, read by `npm run build` (scripts/build.mjs),
+   which compiles one static stylesheet shared by every page.
+
+   `content` is every file a class name can be written in. Tailwind reads
+   them as plain text and keeps only the utilities it finds, so a class
+   has to appear whole somewhere in the source — `"text-" + size` would
+   compile to nothing. */
+module.exports = {
+  content: ["./components/**/*.js", "./src/*.html"],
   theme: {
     extend: {
       fontFamily: {

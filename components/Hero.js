@@ -18,21 +18,17 @@
    slightly smaller headline. The desktop steps carry the full scale. */
 (function () {
   const { useState } = React;
-  const motion = window.Motion.motion;
   const AnimatePresence = window.Motion.AnimatePresence;
   const FadingVideo = window.FadingVideo;
   const BlurText = window.BlurText;
   const ArrowUpRight = window.ArrowUpRight;
   const Play = window.Play;
   const ContactModal = window.ContactModal;
-  const useReducedMotion = window.useReducedMotion;
-  const reveal = window.reveal;
 
   const HERO_VIDEO =
     "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_080021_d598092b-c4c2-4e53-8e46-94cf9064cd50.mp4";
 
   function Hero() {
-    const reduced = useReducedMotion();
     const [contactOpen, setContactOpen] = useState(false);
 
     return (
@@ -49,20 +45,21 @@
             as="h1"
             text="We Make Websites that Are Impossible to Ignore"
             delay={100}
+            immediate
             className="font-heading italic text-ink-primary max-w-[7.64em] justify-center text-[2.25rem] sm:text-[4rem] md:text-[5rem] lg:text-[5.5rem] leading-[0.85] tracking-[-0.09375rem] md:tracking-[-0.25rem]"
           />
 
-          <motion.p
-            {...reveal(reduced, 0.8)}
-            className="max-w-[42rem] font-body font-light text-ink-primary text-sm md:text-base leading-5"
+          <p
+            style={{ animationDelay: "0.8s" }}
+            className="entrance max-w-[42rem] font-body font-light text-ink-primary text-sm md:text-base leading-5"
           >
             We have spent decades mastering technology and design to build stunning websites and
             brand identities that drive real, measurable sales
-          </motion.p>
+          </p>
 
-          <motion.div
-            {...reveal(reduced, 1.1)}
-            className="flex flex-wrap items-center justify-center gap-4 sm:gap-6"
+          <div
+            style={{ animationDelay: "1.1s" }}
+            className="entrance flex flex-wrap items-center justify-center gap-4 sm:gap-6"
           >
             <a
               href="#websites"
@@ -79,7 +76,7 @@
               Let&rsquo;s talk
               <Play className="h-5 w-5 shrink-0" />
             </button>
-          </motion.div>
+          </div>
         </div>
       </section>
 

@@ -8,7 +8,6 @@
    clip, but a long read wants a still ground under it — and the raised
    glass the method cards use needs the black to lift off. */
 (function () {
-  const motion = window.Motion.motion;
   const FadingVideo = window.FadingVideo;
   const TopBar = window.TopBar;
   const BottomNav = window.BottomNav;
@@ -20,8 +19,6 @@
   const MethodBlock = window.MethodBlock;
   const MethodBody = window.MethodBody;
   const ArrowUpRight = window.ArrowUpRight;
-  const useReducedMotion = window.useReducedMotion;
-  const reveal = window.reveal;
   const PROJECT = window.PROJECT;
 
   const HERO_VIDEO =
@@ -36,8 +33,6 @@
   }));
 
   function Hero() {
-    const reduced = useReducedMotion();
-
     return (
       <section id="overview" className="relative min-h-[86vh] w-full overflow-hidden bg-black scroll-mt-20">
         <FadingVideo
@@ -47,38 +42,39 @@
         />
 
         <div className={"on-video relative z-10 flex min-h-[86vh] flex-col justify-center gap-6 pt-28 pb-44 sm:py-28 " + SHELL}>
-          <motion.div {...reveal(reduced, 0.1)}>
+          <div className="entrance" style={{ animationDelay: "0.1s" }}>
             <Kicker className="font-body text-sm leading-[1.1875rem] text-ink-tertiary">
               {PROJECT.kicker}
             </Kicker>
-          </motion.div>
+          </div>
 
           <BlurText
             as="h1"
             align="left"
             text={PROJECT.title}
             delay={100}
+            immediate
             className="font-heading italic text-ink-primary max-w-[7.64em] text-[2.25rem] sm:text-[4rem] md:text-[5rem] lg:text-[6rem] leading-[0.9] tracking-[-0.125rem] md:tracking-[-0.1875rem]"
           />
 
-          <motion.p
-            {...reveal(reduced, 0.7)}
-            className="max-w-[42rem] font-body font-light text-base leading-6 text-ink-primary"
+          <p
+            style={{ animationDelay: "0.7s" }}
+            className="entrance max-w-[42rem] font-body font-light text-base leading-6 text-ink-primary"
           >
             {PROJECT.summary}
-          </motion.p>
+          </p>
 
-          <motion.dl {...reveal(reduced, 0.9)} className="flex flex-wrap gap-x-12 gap-y-5 m-0">
+          <dl style={{ animationDelay: "0.9s" }} className="entrance flex flex-wrap gap-x-12 gap-y-5 m-0">
             {PROJECT.meta.map(({ label, value }) => (
               <div key={label} className="flex flex-col gap-1.5">
                 <dd className="m-0 font-heading italic text-ink-primary text-2xl leading-7">{value}</dd>
                 <dt><Label>{label}</Label></dt>
               </div>
             ))}
-          </motion.dl>
+          </dl>
 
           {PROJECT.liveHref && (
-            <motion.div {...reveal(reduced, 1.05)}>
+            <div className="entrance" style={{ animationDelay: "1.05s" }}>
               <a
                 href={PROJECT.liveHref}
                 className="liquid-glass-strong rounded-full inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium leading-5 text-ink-primary font-body"
@@ -86,7 +82,7 @@
                 {PROJECT.liveLabel || "View the work"}
                 <ArrowUpRight className="h-5 w-5 shrink-0" />
               </a>
-            </motion.div>
+            </div>
           )}
         </div>
       </section>
@@ -137,5 +133,13 @@
 
   window.ProjectPage = ProjectPage;
 
-  ReactDOM.createRoot(document.getElementById("root")).render(<ProjectPage />);
+  /* The build pre-renders this page into #root (scripts/build.mjs), so in
+     the browser React adopts the markup that is already on screen rather
+     than drawing it again. At build time there is no document: the build
+     renders window.ProjectPage itself. */
+  if (typeof document !== "undefined") {
+    const root = document.getElementById("root");
+    if (root.hasChildNodes()) ReactDOM.hydrateRoot(root, <ProjectPage />);
+    else ReactDOM.createRoot(root).render(<ProjectPage />);
+  }
 })();

@@ -6,9 +6,16 @@
    Under reduced motion the clip is never played: it holds on its first
    frame, so the page keeps its imagery without indefinite background
    movement the reader cannot stop. The element is decorative and is
-   hidden from assistive tech either way. */
+   hidden from assistive tech either way.
+
+   The file is not requested with the page. The source is attached once
+   the page has finished loading, and only when the video is within a
+   screen of the viewport — so a clip further down the page waits until
+   the reader scrolls towards it. A background video is megabytes; left
+   to `preload`, it would compete with everything the first screen
+   needs, and the black it replaces is what the fade starts from anyway. */
 (function () {
-  const { useEffect, useRef } = React;
+  const { useEffect, useRef, useState } = React;
   const useReducedMotion = window.useReducedMotion;
 
   const FADE_MS = 500;
@@ -19,6 +26,34 @@
     const rafRef = useRef(null);
     const fadingOutRef = useRef(false);
     const reduced = useReducedMotion();
+    const [wanted, setWanted] = useState(false);
+
+    useEffect(() => {
+      const video = videoRef.current;
+      if (!video || wanted) return;
+
+      let observer;
+      const watch = () => {
+        observer = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((entry) => entry.isIntersecting)) {
+              observer.disconnect();
+              setWanted(true);
+            }
+          },
+          { rootMargin: "100% 0px" }
+        );
+        observer.observe(video);
+      };
+
+      if (document.readyState === "complete") watch();
+      else window.addEventListener("load", watch, { once: true });
+
+      return () => {
+        window.removeEventListener("load", watch);
+        if (observer) observer.disconnect();
+      };
+    }, [wanted]);
 
     useEffect(() => {
       const video = videoRef.current;
@@ -96,7 +131,7 @@
     return (
       <video
         ref={videoRef}
-        src={src}
+        src={wanted ? src : undefined}
         className={className}
         style={{ opacity: 0, ...style }}
         autoPlay={!reduced}

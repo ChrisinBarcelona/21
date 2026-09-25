@@ -61,5 +61,13 @@
 
   window.App = App;
 
-  ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  /* The build pre-renders this page into #root (scripts/build.mjs), so in
+     the browser React adopts the markup that is already on screen rather
+     than drawing it again. At build time there is no document: the build
+     renders window.App itself. */
+  if (typeof document !== "undefined") {
+    const root = document.getElementById("root");
+    if (root.hasChildNodes()) ReactDOM.hydrateRoot(root, <App />);
+    else ReactDOM.createRoot(root).render(<App />);
+  }
 })();
