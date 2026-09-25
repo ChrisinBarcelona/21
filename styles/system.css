@@ -282,7 +282,7 @@ main:focus, main:focus-visible { outline: none; }
 
    Every selector below names `.bottom-nav` as well as its own class.
    That is two classes against a Tailwind utility's one, so these hold
-   wherever the Play CDN happens to inject its stylesheet.
+   whatever order the stylesheets are joined in.
    ------------------------------------------------------------------ */
 .bottom-nav {
   --nav-scale: 1;
@@ -329,9 +329,60 @@ main:focus, main:focus-visible { outline: none; }
 }
 
 /* ------------------------------------------------------------------
-   Reduced motion. The entrance animations are driven by Framer Motion
-   from JS, so the components read the same preference and drop the
-   travel and blur themselves; this covers the CSS-driven parts.
+   Entrance. The first screen's reveals — the wordmark, the hero
+   headline, copy and buttons, the bottom nav — run from CSS rather than
+   Framer Motion. The page arrives pre-rendered, and these play as soon
+   as it paints instead of after the JavaScript has loaded and hydrated,
+   so the first screen is never waiting on a script to become visible.
+
+   The keyframes are the Framer ones, value for value: `reveal()` in
+   Motion.js for `.entrance`, BlurText's three steps for
+   `.entrance-word`. cubic-bezier(0, 0, 0.58, 1) is Framer's easeOut.
+   Delays are set inline, per element, as `animation-delay`.
+
+   Everything below the first screen still reveals through Framer Motion
+   as it scrolls into view.
+
+   Each fade starts at 1% opacity, not 0. Browsers skip anything at
+   opacity 0 when they record the first paint, and a fade runs on the
+   compositor without painting again — so a first screen that fades in
+   from exactly 0 never registers as painted at all, and page-speed tools
+   report the page as blank (Lighthouse fails with NO_FCP / NO_LCP).
+   1% white on the black canvas cannot be seen; it is the difference
+   between the headline counting as drawn and not.
+   ------------------------------------------------------------------ */
+@keyframes entrance-rise {
+  from { opacity: 0.01; filter: blur(10px); transform: translateY(var(--entrance-from, 20px)); }
+  to   { opacity: 1; filter: blur(0px);  transform: none; }
+}
+
+@keyframes entrance-word {
+  0%   { opacity: 0.01; filter: blur(10px); transform: translateY(50px); }
+  50%  { opacity: 0.5;  filter: blur(5px);  transform: translateY(-5px); }
+  100% { opacity: 1;    filter: blur(0px);  transform: none; }
+}
+
+@keyframes entrance-fade {
+  from { opacity: 0.01; }
+  to   { opacity: 1; }
+}
+
+.entrance {
+  animation: entrance-rise 0.8s cubic-bezier(0, 0, 0.58, 1) both;
+}
+/* the wordmark drops in from above rather than rising */
+.entrance-drop { --entrance-from: -12px; }
+
+.entrance-word {
+  display: inline-block;
+  animation: entrance-word 0.7s cubic-bezier(0, 0, 0.58, 1) both;
+}
+
+/* ------------------------------------------------------------------
+   Reduced motion. The scroll reveals are driven by Framer Motion from
+   JS, so the components read the same preference and drop the travel
+   and blur themselves; this covers the CSS-driven parts, the first
+   screen's entrance among them.
    ------------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -340,6 +391,13 @@ main:focus, main:focus-visible { outline: none; }
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  /* The entrance keeps its fade and loses its travel, blur and stagger:
+     under the rule above the fade is instant, so the first screen is
+     simply there. */
+  .entrance, .entrance-word {
+    animation-name: entrance-fade;
+    animation-delay: 0s !important;
   }
 }
 

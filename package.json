@@ -1,0 +1,25 @@
+{
+  "name": "chriskelly-it",
+  "version": "1.0.0",
+  "description": "The chriskelly.it site. See README.md.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "python3 -m http.server 8000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChrisinBarcelona/21.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ChrisinBarcelona/21/issues"
+  },
+  "homepage": "https://github.com/ChrisinBarcelona/21#readme",
+  "devDependencies": {
+    "esbuild": "^0.24.2",
+    "framer-motion": "^11.11.17",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwindcss": "3.4"
+  },
+  "private": true
+}

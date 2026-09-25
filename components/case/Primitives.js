@@ -6,10 +6,10 @@
      the card it sits in, so nesting stays legible without a second border
      treatment.
 
-     No `...rest` here on purpose: Babel-standalone compiles object-rest
-     destructuring to a top-level `const _excluded`, and every file on this
-     page shares one global scope, so a second one is a redeclaration that
-     kills the whole script. FadingVideo already owns the only one. */
+     No `...rest` here. It was once a hard rule — Babel-standalone compiled
+     object-rest destructuring to a top-level `const _excluded` that
+     collided across files — and the build has since lifted it, but these
+     primitives take nothing they do not name. */
   function Tile({ className = "", children }) {
     return (
       <div

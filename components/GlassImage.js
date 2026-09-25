@@ -8,12 +8,23 @@
    `className` and the image crops to fill it. Callers showing artwork
    whose shape is the point — a 9:16 story, a square post — pass `ratio`
    instead, and the tile takes the artwork's proportions so nothing is
-   cropped. `ratio="auto"` lets the file itself set the height. */
+   cropped. `ratio="auto"` lets the file itself set the height.
+
+   The <img> is added once the page has hydrated, not in the pre-rendered
+   HTML. Two reasons. An image that failed before hydration would never
+   reach `onError` — React was not listening yet — and would leave a broken
+   frame. And every tile on the page sits below the first screen, but
+   browsers start "lazy" images well before they scroll into view; in the
+   HTML they would download alongside the fonts the first screen is
+   waiting for. The tile itself is in the HTML, so nothing moves when the
+   image arrives. */
 (function () {
-  const { useState } = React;
+  const { useEffect, useState } = React;
 
   function GlassImage({ src, alt, className = "", radius = "var(--radius-md)", ratio }) {
     const [failed, setFailed] = useState(false);
+    const [hydrated, setHydrated] = useState(false);
+    useEffect(() => setHydrated(true), []);
     const flows = ratio === "auto";
 
     return (
@@ -24,7 +35,7 @@
           aspectRatio: ratio && !flows ? ratio : undefined
         }}
       >
-        {!failed && (
+        {hydrated && !failed && (
           <img
             src={src}
             alt={alt}

@@ -17,7 +17,6 @@
   const { useEffect, useState } = React;
   const motion = window.Motion.motion;
   const useReducedMotion = window.useReducedMotion;
-  const reveal = window.reveal;
 
   /* The home page's destinations. Other pages pass their own — the case
      study passes its chapters — so there is one nav implementation. */
@@ -73,9 +72,9 @@
         aria-label={label}
         style={{ "--nav-track": maxWidth }}
       >
-        <motion.ul
-          {...reveal(reduced, 1.2)}
-          className="bottom-nav-pill liquid-glass-strong rounded-full flex items-center w-full pointer-events-auto list-none m-0"
+        <ul
+          style={{ animationDelay: "1.2s" }}
+          className="entrance bottom-nav-pill liquid-glass-strong rounded-full flex items-center w-full pointer-events-auto list-none m-0"
         >
           {items.map(({ id, label, Icon }) => {
             const isActive = active === id;
@@ -121,7 +120,7 @@
               </li>
             );
           })}
-        </motion.ul>
+        </ul>
       </nav>
     );
   }

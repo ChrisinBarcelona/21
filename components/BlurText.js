@@ -2,7 +2,15 @@
    below and overshooting slightly. Triggers once the element is 10% visible.
 
    Under reduced motion the split is skipped entirely: the headline renders
-   as one run of text that simply fades in. */
+   as one run of text that simply fades in.
+
+   `immediate` is for a headline on the first screen. It plays the same
+   keyframes on page load from CSS (`.entrance-word` in system.css)
+   instead of from Framer Motion, so the headline draws from the
+   pre-rendered HTML without waiting for any JavaScript — it is what the
+   visitor sees first, and what page-speed tools time. The stylesheet
+   handles reduced motion for it, so the split stays: under reduced motion
+   the words simply appear. */
 (function () {
   const { useEffect, useRef, useState } = React;
   const motion = window.Motion.motion;
@@ -21,12 +29,16 @@
     y: [FROM.y, STEPS[0].y, STEPS[1].y]
   };
 
-  function useInView(ref) {
+  /* `variant` names which element `ref` is on. The reduced-motion
+     preference arrives just after hydration and swaps the split headline
+     for a single run of text — a new element — so the observer has to
+     move to it, or a headline not yet scrolled to would never appear. */
+  function useInView(ref, variant) {
     const [inView, setInView] = useState(false);
 
     useEffect(() => {
       const el = ref.current;
-      if (!el) return;
+      if (!el || inView) return;
 
       const observer = new IntersectionObserver(
         (entries) => {
@@ -42,15 +54,15 @@
 
       observer.observe(el);
       return () => observer.disconnect();
-    }, []);
+    }, [variant]);
 
     return inView;
   }
 
-  function BlurText({ text = "", delay = 100, className = "", align = "center", as = "p", id }) {
+  function BlurText({ text = "", delay = 100, className = "", align = "center", as = "p", id, immediate = false }) {
     const ref = useRef(null);
-    const inView = useInView(ref);
     const reduced = useReducedMotion();
+    const inView = useInView(ref, reduced);
 
     const layout = {
       display: "flex",
@@ -63,6 +75,21 @@
          line stays centred and the measure matches the design frame. */
       columnGap: "0.18em"
     };
+
+    if (immediate) {
+      return React.createElement(
+        as,
+        { id, className, style: layout },
+        text.split(" ").map((word, i) => (
+          <React.Fragment key={word + i}>
+            {i > 0 ? " " : null}
+            <span className="entrance-word" style={{ animationDelay: (i * delay) / 1000 + "s" }}>
+              {word}
+            </span>
+          </React.Fragment>
+        ))
+      );
+    }
 
     if (reduced) {
       return React.createElement(

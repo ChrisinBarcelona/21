@@ -6,44 +6,92 @@ looping background videos and a shared liquid-glass design system.
 Implemented from Figma: **inri-#005 — CKLY DESIGN**, frame `Total Website`
 (`0:342`).
 
-## Cache busting
+## Building
 
-Every local script and stylesheet in `index.html` and `project.html` carries
-`?v=<version>`.
-
-GitHub Pages serves these files with a ten-minute cache and no fingerprint in
-their names, so a browser that already has the page keeps running the
-JavaScript it downloaded before. The markup updates; the copy living inside the
-components does not — which looks exactly like a deploy that did not happen.
-
-**Bump the string on any deploy that changes a file under `components/` or
-`styles/`.** It is one find-and-replace across the two HTML files. Editing only
-the HTML does not need a bump.
-
-The alternative — a timestamp generated per page load — would defeat caching for
-every visitor on every visit, on a page that already asks them to download 3MB
-of Babel. The version string costs one edit per deploy and nothing at runtime.
-
-## Running it
-
-Everything is CDN-only, but the components are loaded as separate
-`<script type="text/babel" src="...">` files, which Babel fetches over XHR. Open the
-page through a static server rather than `file://`:
+The site has a build step. `index.html` and `project.html` at the root are
+**generated** — edit `src/`, `components/` and `styles/`, then run:
 
 ```
-python3 -m http.server 8000
-# then visit http://localhost:8000
+npm install        # once
+npm run build
+npm run serve      # then visit http://localhost:8000
 ```
+
+Commit what the build writes (`index.html`, `project.html`, `dist/`) along with
+your source changes. GitHub Pages serves the repository as it is and runs no
+build of its own, so a source change that has not been built is not live.
+
+`scripts/build.mjs` does, once, what every visitor's browser used to do on every
+visit:
+
+- **JavaScript.** The components are bundled with esbuild into one minified
+  script per page, with production React and only the parts of Framer Motion
+  the site uses — about 100KB gzipped, where Babel-standalone alone was 3MB,
+  plus development builds of React and Framer Motion. The component files
+  keep their shape (each is still an IIFE publishing onto `window`); the build
+  simply runs them in the order `PAGES` lists them, which is the order the
+  `<script>` tags used to have. **A new component is added to that list.**
+- **CSS.** Tailwind compiles the classes used in `components/` and `src/` into
+  a static stylesheet, joined with `fonts.css` and `system.css` (in that
+  order, so the system still beats a utility of equal weight) and inlined into
+  the page. Tailwind only sees class names written out whole — `"text-" + size`
+  compiles to nothing.
+- **HTML.** Each page is rendered to HTML with React at build time, so the
+  first screen is in the document itself and draws before any script arrives.
+  React then *hydrates* it — adopts the markup already on screen — rather than
+  drawing it again.
+- **Fonts** are served from `assets/fonts/` rather than Google Fonts (the same
+  latin-subset files), and the three the first screen uses are preloaded.
+
+### Cache busting
+
+The script's file name carries a hash of its contents (`dist/index-4PFLN6DH.js`),
+so every build that changes the code is a new URL that no browser has cached.
+The CSS is inside the HTML. There is nothing to bump by hand any more.
+
+### Things that keep the page fast
+
+These are deliberate; undoing one costs page-speed score.
+
+- **The first screen enters from CSS**, not Framer Motion — the wordmark, hero
+  headline, copy, buttons and bottom nav (`.entrance` and `.entrance-word` in
+  `system.css`; `BlurText` with `immediate`). It plays as soon as the HTML
+  paints instead of after the script has loaded. Below the first screen,
+  Framer Motion reveals on scroll as before.
+- **Those fades start at 1% opacity, not 0.** Browsers do not count anything at
+  opacity 0 as painted, and a fade runs on the compositor without painting
+  again, so a first screen fading in from exactly 0 is reported as never
+  having drawn (Lighthouse fails with NO_FCP / NO_LCP). 1% white on black is
+  invisible.
+- **Videos are requested after the page has loaded**, and only within a
+  screen of the viewport (`FadingVideo`). Megabytes of video would otherwise
+  compete with the fonts and script.
+- **Images are added after hydration** (`GlassImage`). Everything below the
+  first screen is still in the HTML as its glass tile; the `<img>` joins once
+  React is running.
+- **Reduced motion is read after hydration.** The pre-rendered HTML is the
+  full-motion version, so `useReducedMotion` reports `false` during hydration
+  and the real preference immediately after. `reveal()` uses the same start
+  and end states either way and only changes the timing, so nothing can be
+  left half-animated by that switch.
 
 ## Layout
 
 ```
-index.html              the landing page
-project.html            the Individual Project Template (a UX case study)
+index.html              the landing page — generated by the build from src/index.html
+project.html            the Individual Project Template (a UX case study) — generated
+dist/                   the bundled scripts — generated
+src/
+  index.html            the landing page's source: head, title and meta
+  project.html          the case study's source
+scripts/
+  build.mjs             the build — see "Building"
 styles/
   system.css            design tokens, glass, focus, motion and contrast — shared by both pages
+  fonts.css             the self-hosted @font-face rules
   tailwind.config.js    the Tailwind theme extension — shared by both pages
 assets/
+  fonts/                Instrument Serif and Barlow, latin subset, WOFF2
   projects/             the three project thumbnails
   website-portfolio/    the client site thumbnails (see "Website Portfolio thumbnails")
   oak/                  the Oak National Academy artwork (see "Visual Design")
@@ -130,18 +178,18 @@ Notes on the dynamic blocks:
 - Wide blocks scroll inside their own labelled, focusable container rather than
   widening the page.
 
-### A Babel-standalone constraint
+### One shared global scope
 
-Every component file is an IIFE publishing onto `window`, because
-Babel-standalone runs them all in one shared global scope. That protects your own
-bindings but **not Babel's injected helpers**: object-rest destructuring
-(`function F({ a, ...rest })`) compiles to a top-level `const _excluded`, and a
-second one anywhere on the page is a redeclaration that kills the script.
-`FadingVideo` owns the only one. JSX spread (`{...props}`) is fine — it emits a
-function declaration, which can redeclare.
+Every component file is an IIFE publishing onto `window`, and reads the
+components it needs back off `window`. The pages used to run each file through
+Babel-standalone in one shared global scope; the build now bundles them, but the
+convention stays — a file can only use what a file above it in `PAGES`
+(`scripts/build.mjs`) has published.
 
-Each component file wraps its body in an IIFE and publishes itself on `window`, since
-Babel-standalone runs every script in the shared global scope.
+The old Babel-standalone trap is gone with it: object-rest destructuring
+(`function F({ a, ...rest })`) used to compile to a top-level `const _excluded`
+that collided with any second one on the page. esbuild keeps each file's
+helpers to itself.
 
 ## Design system
 
@@ -207,8 +255,8 @@ labels readable over a bright frame.
 
 Those metrics live in CSS rather than in Tailwind utilities *because* they all have
 to come down together, and each selector names `.bottom-nav` as well as its own
-class — two classes against a utility's one, so they hold wherever the Play CDN
-injects its stylesheet.
+class — two classes against a utility's one, so they hold whatever order the
+stylesheets end up in.
 
 The first type step is gentler than a strict 1.125x. A phone viewport cannot take the
 full multiple without pushing the hero CTAs under the floating nav; the desktop
