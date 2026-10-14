@@ -1,4 +1,4 @@
-/* Hero — full-viewport looping starfield with the chrome layered straight on
+/* Hero — full-viewport looping enchanted-forest clip with the chrome layered straight on
    top. There is deliberately no dark overlay on the video: all contrast comes
    from the liquid glass, which is why the CTA carries its own surface rather
    than sitting on a scrim, and why the loose copy carries `on-video`.
@@ -25,8 +25,10 @@
   const Play = window.Play;
   const ContactModal = window.ContactModal;
 
-  const HERO_VIDEO =
-    "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_080021_d598092b-c4c2-4e53-8e46-94cf9064cd50.mp4";
+  /* Served from this site. 1080p H.264, re-encoded from the 14MB original
+     at CRF 26 with the audio track dropped (the clip always plays muted):
+     5.9MB, no visible difference at full screen. */
+  const HERO_VIDEO = "assets/video/hero-enchanted.mp4";
 
   function Hero() {
     const [contactOpen, setContactOpen] = useState(false);
