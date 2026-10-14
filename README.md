@@ -105,7 +105,7 @@ components/
   BlurText.js           word-by-word blur-in headline, IntersectionObserver triggered
   TopBar.js             sticky wordmark
   BottomNav.js          floating glass pill with scroll-spy
-  Hero.js               section 1 — starfield video
+  Hero.js               section 1 — enchanted-forest video
   ContactModal.js       the "Let's talk" dialog — contact form, posts to Web3Forms
   LeaveSiteModal.js     the "about to leave" dialog, between a card and a live site
   WebsitePortfolio.js   section 2 — Latest Websites (client sites)
